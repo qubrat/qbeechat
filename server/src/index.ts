@@ -3,9 +3,10 @@ import express from "express";
 import { config } from "@/config/config";
 import { Log } from "@/services/logger";
 
+import { rules } from "@/middleware/rules";
+import { logTraffic } from "@/middleware/logTraffic";
+
 import chat from "@/routes/chat";
-import { rules } from "../middleware/Rules";
-import { logTraffic } from "../middleware/LogTraffic";
 
 const server = express();
 
