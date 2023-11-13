@@ -7,6 +7,8 @@ import HomepageForm from "./HomepageForm";
 import { HomepageMode } from "../Homepage";
 import login from "../../../assets/login.jpg";
 
+import Snackbar from "../../../components/Snackbar";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
@@ -65,6 +67,7 @@ const Login = ({ setMode }: LoginProps) => {
 				</HomepageForm>
 				<img src={login} alt="" className="max-w-lg rounded-r-3xl" />
 			</motion.div>
+			<Snackbar text="Please provide all the details" variant="error" />
 		</AnimatePresence>
 	);
 };
