@@ -2,14 +2,19 @@ import { useState, FormEvent } from "react";
 import Input from "../../../components/Input";
 import PasswordInput from "../../../components/PasswordInput";
 import Button from "../../../components/Button";
-import useInput from "../../../hooks/useInput";
+import customToast from "../../../components/customToast";
 import HomepageForm from "./HomepageForm";
 import { HomepageMode } from "../Homepage";
+import useInput from "../../../hooks/useInput";
 
 import register from "../../../assets/register.jpg";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
+
+import axios from "axios";
+import { BASE_URL } from "../../../config/settings";
+import { useNavigate } from "react-router-dom";
 
 type RegisterProps = {
 	setMode: React.Dispatch<React.SetStateAction<HomepageMode>>;
@@ -22,28 +27,40 @@ const Register = ({ setMode }: RegisterProps) => {
 	const confirmPassword = useInput("");
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const navigate = useNavigate();
+
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
-		validateInput(name);
-		validateInput(email);
-		validateInput(password);
-		validateInput(confirmPassword);
+		if (!email.value?.trim() || !password.value?.trim() || !confirmPassword.value?.trim() || !name.value?.trim()) {
+			customToast({ message: "Please provide all the details", type: "warning" });
+		}
+		if (!email.value?.includes("@") && email.value?.trim()) {
+			customToast({ message: "Please provide a valid email", type: "warning" });
+		}
+		if (password.value?.trim() !== confirmPassword.value?.trim()) {
+			customToast({ message: "Passwords do not match", type: "error" });
+		}
 		try {
-		} catch (error) {
+			const payload = {
+				name: name.value,
+				email: email.value,
+				password: password.value,
+			};
+			const { data } = await axios.post(`${BASE_URL}/user`, payload);
+			localStorage.setItem("userInfo", JSON.stringify(data));
+			setLoading(false);
+			navigate("/chat");
+		} catch (error: any) {
 			console.error(error);
+			if (error.response.data.code === "USER_EXISTS") {
+				customToast({ message: "User with provided email already exists", type: "error" });
+			}
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const validateInput = (input: { value: string | null; setError: (value: boolean) => void }) => {
-		if (!input.value?.trim()) {
-			input.setError(true);
-		} else {
-			input.setError(false);
-		}
-	};
 	return (
 		<AnimatePresence>
 			<motion.div
@@ -52,6 +69,7 @@ const Register = ({ setMode }: RegisterProps) => {
 				initial="hidden"
 				animate="visible"
 				exit="exit"
+				key="register"
 			>
 				<HomepageForm
 					textTop="Start for free"

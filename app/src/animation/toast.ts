@@ -1,14 +1,14 @@
-export const toast = {
-	hidden: {
+export const toastAnimation = {
+	hiddenToast: {
 		opacity: 0,
-		y: -150,
+		y: 150,
 	},
-	visible: {
+	visibleToast: {
 		opacity: 1,
-		x: 0,
+		y: 0,
 	},
-	exit: {
+	exitToast: {
 		opacity: 0,
-		y: -150,
+		y: 150,
 	},
 };

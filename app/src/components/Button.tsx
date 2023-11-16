@@ -24,7 +24,9 @@ const Button = ({ type, onClick, text, loading, variant }: SubmitButtonProps) =>
 	return (
 		<button
 			type={type}
-			className={`w-1/2 px-4 py-4 rounded-2xl text-lg text-slate-100 font-bold ${getVariant()} hover:opacity-95 transition duration-300 hover:shadow-2xl hover:shadow-sky-700/30`}
+			className={`w-1/2 px-4 py-4 rounded-2xl text-lg text-slate-100 font-bold ${getVariant()} hover:opacity-95 transition duration-300 hover:shadow-2xl hover:shadow-sky-700/30 ${
+				loading ? "cursor-default opacity-75" : ""
+			}`}
 			onClick={onClick}
 			disabled={loading}
 		>

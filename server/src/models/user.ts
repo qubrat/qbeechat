@@ -25,7 +25,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
 			trim: true,
 			default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
 		},
-		isAdmin: { type: Boolean, required: true, default: false },
+		isAdmin: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );

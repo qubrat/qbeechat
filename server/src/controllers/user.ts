@@ -4,67 +4,70 @@ import { chats } from "@/data/data";
 import { NextFunction, Request, Response } from "express";
 import { User } from "@/models/user";
 import { generateToken } from "@/library/generateToken";
+import { UserError } from "@/library/errors";
 
-const getUsers = async (req: Request, res: Response) => {
-	try {
-		return res.status(200).json(chats);
-	} catch (error) {
-		return res.status(500).json({ error });
+const getUsers = asyncHandler(async (req: Request, res: Response) => {
+	const users = await User.find({});
+	res.status(200).json(users);
+});
+
+const getUser = asyncHandler(async (req: Request, res: Response) => {
+	const user = await User.findById(req.params.id);
+	if (user) {
+		res.status(200).json(user);
+	} else {
+		res.status(404);
+		throw new UserError("User not found", "USER_NOT_FOUND");
 	}
-};
+});
 
-const getUser = async (req: Request, res: Response) => {
-	// try {
-	// 	const { id } = req.params;
-	// 	const user = chats.find((chat) => chat._id === id);
-	// 	return user ? res.status(200).json(user) : res.status(404).json({ message: "Resource not found" });
-	// } catch (error) {
-	// 	res.status(500).json({ error });
-	// }
-};
-
-const register = async (req: Request, res: Response) => {
+const register = asyncHandler(async (req: Request, res: Response) => {
 	const { name, email, password } = req.body;
 	if (!name || !email || !password) {
-		return res.status(400).json({ message: "Please provide all required fields" });
+		res.status(400);
+		throw new UserError("Did not provide all required fields", "MISSING_FIELDS");
 	}
 	const userExists = await User.findOne({ email });
 
 	if (userExists) {
-		return res.status(400).json({ message: "User already exists" });
+		res.status(400);
+		throw new UserError("User with given credentials already exists", "USER_EXISTS");
 	}
 
 	const user = await User.create({ name, email, password });
 
 	if (user) {
-		return res.status(201).json({
+		res.status(201).json({
 			_id: user._id,
 			name: user.name,
 			email: user.email,
 			token: generateToken(user._id),
 		});
 	} else {
-		return res.status(400).json({ message: "Invalid user data" });
+		res.status(400).json({ message: "Invalid user data", code: "INVALID_DATA" });
+		throw new UserError("Provided invalid user data", "INVALID_DATA");
 	}
-};
+});
 
-const auth = async (req: Request, res: Response) => {
+const auth = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
-		return res.status(400).json({ message: "Please provide all required fields" });
+		res.status(400);
+		throw new UserError("Please provide all required fields", "MISSING_FIELDS");
 	} else {
 		const user = await User.findOne({ email });
 		if (user && (await user.matchPassword(password))) {
-			return res.status(200).json({
+			res.status(200).json({
 				_id: user._id,
 				name: user.name,
 				email: user.email,
 				token: generateToken(user._id),
 			});
 		} else {
-			return res.status(401).json({ message: "Invalid email or password" });
+			res.status(401);
+			throw new UserError("Invalid email or password", "INVALID_CREDENTIALS");
 		}
 	}
-};
+});
 
 export default { getUsers, getUser, register, auth };

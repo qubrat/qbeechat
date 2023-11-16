@@ -26,6 +26,15 @@
   @apply text-primary;
 }
 
+.toast+.toast {
+  margin-top: 1rem;
+}
+
+.required::after {
+  @apply ml-1 text-slate-400;
+  content: "*";
+}
+
 body {
   margin: 0;
   display: flex;

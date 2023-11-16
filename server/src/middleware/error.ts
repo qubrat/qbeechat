@@ -1,3 +1,4 @@
+import { Log } from "@/services/logger";
 import { Request, Response, NextFunction } from "express";
 
 const notFound = (req: Request, res: Response, next: NextFunction) => {
@@ -11,8 +12,10 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
 	res.status(statusCode);
 	res.json({
 		message: err.message,
+		code: err.code,
 		stack: process.env.NODE_ENV === "production" ? null : err.stack,
 	});
+	Log.error(err);
 };
 
 export default { notFound, errorHandler };

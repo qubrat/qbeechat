@@ -10,6 +10,7 @@ export default {
 			slate: colors.slate,
 			amber: colors.amber,
 			white: colors.white,
+			black: colors.black,
 			red: colors.red,
 			orange: colors.orange,
 			sky: colors.sky,
@@ -18,8 +19,15 @@ export default {
 			secondary: "#296e98",
 			error: "#db3056",
 			errorDark: "#872043",
+			warning: "#fc8621",
+			warningDark: "#c24914",
 			success: "#03a65a",
 			successDark: "#005e38",
+		},
+		extend: {
+			animation: {
+				"spin-once": "spin 0.4s ease-in-out",
+			},
 		},
 	},
 	plugins: [],

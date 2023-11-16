@@ -10,10 +10,11 @@ type InputProps = {
 	icon?: string;
 	errorMessage?: string;
 	disabled?: boolean;
+	required?: boolean;
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: FC<InputProps> = ({ type, label, value, name, icon, placeholder, errorMessage, disabled, onChange }) => {
+const Input: FC<InputProps> = ({ type, label, value, name, icon, placeholder, errorMessage, disabled, required, onChange }) => {
 	return (
 		<div className="relative">
 			<input
@@ -26,7 +27,7 @@ const Input: FC<InputProps> = ({ type, label, value, name, icon, placeholder, er
 				type={type}
 				className={`input-w-label w-full px-6 pb-2 border-4 border-slate-200 pt-6 outline-none appearance-none text-slate-800 font-bold rounded-2xl bg-slate-200 focus:bg-white transition duration-200 focus:ring-2 focus:ring-primary ring-inset`}
 			/>
-			<label htmlFor={label} className="absolute text-sm input-label top-3 left-7 text-slate-400">
+			<label htmlFor={label} className={`absolute text-sm input-label top-3 left-7 text-slate-400 ${required ? "required" : ""}`}>
 				{label}
 			</label>
 			{icon && <Icon className="absolute font-bold rounded-md right-5 top-5 text-slate-400" icon={icon} width="24" height="24" />}

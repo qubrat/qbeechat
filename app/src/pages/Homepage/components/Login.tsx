@@ -2,15 +2,19 @@ import { useState, FormEvent } from "react";
 import Input from "../../../components/Input";
 import PasswordInput from "../../../components/PasswordInput";
 import Button from "../../../components/Button";
-import useInput from "../../../hooks/useInput";
+import customToast from "../../../components/customToast";
 import HomepageForm from "./HomepageForm";
 import { HomepageMode } from "../Homepage";
-import login from "../../../assets/login.jpg";
+import useInput from "../../../hooks/useInput";
 
-import Snackbar from "../../../components/Snackbar";
+import login from "../../../assets/login.jpg";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
+
+import axios from "axios";
+import { BASE_URL } from "../../../config/settings";
+import { useNavigate } from "react-router-dom";
 
 type LoginProps = {
 	setMode: React.Dispatch<React.SetStateAction<HomepageMode>>;
@@ -21,26 +25,40 @@ const Login = ({ setMode }: LoginProps) => {
 	const password = useInput("");
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const navigate = useNavigate();
+
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
-		validateInput(email);
-		validateInput(password);
+		if (!email.value?.trim() && !password.value?.trim()) {
+			customToast({ message: "Please provide email and password", type: "warning" });
+			setLoading(false);
+			return;
+		}
+		if (!email.value?.includes("@") && email.value?.trim()) {
+			customToast({ message: "Please provide a valid email", type: "warning" });
+			setLoading(false);
+			return;
+		}
 		try {
-		} catch (error) {
+			const payload = {
+				email: email.value,
+				password: password.value,
+			};
+			const { data } = await axios.post(`${BASE_URL}/user/login`, payload);
+			localStorage.setItem("userInfo", JSON.stringify(data));
+			setLoading(false);
+			navigate("/chat");
+		} catch (error: any) {
 			console.error(error);
+			if (error.response.data.code === "INVALID_CREDENTIALS") {
+				customToast({ message: "Wrong email or password", type: "error" });
+			}
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	const validateInput = (input: { value: string | null; setError: (value: boolean) => void }) => {
-		if (!input.value?.trim()) {
-			input.setError(true);
-		} else {
-			input.setError(false);
-		}
-	};
 	return (
 		<AnimatePresence>
 			<motion.div
@@ -49,6 +67,7 @@ const Login = ({ setMode }: LoginProps) => {
 				initial="hidden"
 				animate="visible"
 				exit="exit"
+				key="login"
 			>
 				<HomepageForm
 					textTop="log in to start chatting"
@@ -60,14 +79,13 @@ const Login = ({ setMode }: LoginProps) => {
 					modeLink="register"
 				>
 					<form onSubmit={handleSubmit} className="flex flex-col max-w-md gap-4 w-[448px]">
-						<Input icon="solar:letter-bold" type="text" label="Email" name="email" placeholder="Enter your email" {...email} />
-						<PasswordInput label="Password" name="password" placeholder="Enter your password" {...password} />
+						<Input icon="solar:letter-bold" type="text" label="Email" name="email" placeholder="Enter your email" {...email} required />
+						<PasswordInput label="Password" name="password" placeholder="Enter your password" {...password} required />
 						<Button type="submit" text="Log in" loading={loading} />
 					</form>
 				</HomepageForm>
 				<img src={login} alt="" className="max-w-lg rounded-r-3xl" />
 			</motion.div>
-			<Snackbar text="Please provide all the details" variant="error" />
 		</AnimatePresence>
 	);
 };
