@@ -5,9 +5,19 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "@/models/user";
 import { generateToken } from "@/library/generateToken";
 import { UserError } from "@/library/errors";
+import { Log } from "@/services/logger";
 
-const getUsers = asyncHandler(async (req: Request, res: Response) => {
-	const users = await User.find({});
+const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
+	const keyword = req.query.search
+		? {
+				$or: [
+					{ name: { $regex: req.query.search.toString(), $options: "i" } },
+					{ email: { $regex: req.query.search.toString(), $options: "i" } },
+				],
+		  }
+		: {};
+
+	const users = await User.find(keyword).find({ _id: { $ne: req.body.user?._id } });
 	res.status(200).json(users);
 });
 
@@ -70,4 +80,4 @@ const auth = asyncHandler(async (req: Request, res: Response, next: NextFunction
 	}
 });
 
-export default { getUsers, getUser, register, auth };
+export default { getAllUsers, getUser, register, auth };
