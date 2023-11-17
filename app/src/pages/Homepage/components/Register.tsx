@@ -34,12 +34,18 @@ const Register = ({ setMode }: RegisterProps) => {
 		setLoading(true);
 		if (!email.value?.trim() || !password.value?.trim() || !confirmPassword.value?.trim() || !name.value?.trim()) {
 			customToast({ message: "Please provide all the details", type: "warning" });
+			setLoading(false);
+			return;
 		}
 		if (!email.value?.includes("@") && email.value?.trim()) {
 			customToast({ message: "Please provide a valid email", type: "warning" });
+			setLoading(false);
+			return;
 		}
 		if (password.value?.trim() !== confirmPassword.value?.trim()) {
 			customToast({ message: "Passwords do not match", type: "error" });
+			setLoading(false);
+			return;
 		}
 		try {
 			const payload = {
