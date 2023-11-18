@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "install": "npm install concurrently && concurrently \"cd app && npm install\" \"cd server && npm install\"",
-    "devstart": "concurrently \"cd app && npm start\" \"cd server && npm run serve\""
+    "devstart": "concurrently \"cd app && npm run dev\" \"cd server && npm run serve\""
   },
   "author": "",
   "license": "ISC",
