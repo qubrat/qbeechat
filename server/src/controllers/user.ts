@@ -17,7 +17,7 @@ const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 		  }
 		: {};
 
-	const users = await User.find(keyword).find({ _id: { $ne: req.body.user?._id } });
+	const users = await User.find(keyword).find({ _id: { $ne: req.body.user?.id } });
 	res.status(200).json(users);
 });
 
