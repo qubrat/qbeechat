@@ -7,6 +7,7 @@ import { authorize } from "@/middleware/auth";
 const router = express.Router();
 
 router.use(authorize);
+router.get("/", controller.getAllUserChats);
 router.post("/", controller.accessChat);
 
 router.use("/group", groupRoutes);
