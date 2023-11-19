@@ -1,10 +1,10 @@
 import "module-alias/register";
 import { Chat } from "@/models/chat";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { User } from "@/models/user";
 
-const getAllUserChats = async (req: Request, res: Response) => {
+const getAllUserChats = expressAsyncHandler(async (req: Request, res: Response) => {
 	try {
 		let chats: unknown = await Chat.find({ users: { $elemMatch: { $eq: req.body.user?._id } } })
 			.populate("users", "-password")
@@ -17,9 +17,9 @@ const getAllUserChats = async (req: Request, res: Response) => {
 		res.status(400);
 		throw new Error(error.message as string);
 	}
-};
+});
 
-const accessChat = async (req: Request, res: Response, next: NextFunction) => {
+const accessChat = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { userId } = req.body;
 	if (!userId) {
 		res.status(400);
@@ -46,22 +46,6 @@ const accessChat = async (req: Request, res: Response, next: NextFunction) => {
 			throw new Error(error.message as string);
 		}
 	}
-};
-
-const createGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
-	res.status(200).json({ message: "createGroupChat" });
 });
 
-const renameGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
-	res.status(200).json({ message: "renameGroupChat" });
-});
-
-const addUserToGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
-	res.status(200).json({ message: "addUserToGroupChat" });
-});
-
-const removeUserFromGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
-	res.status(200).json({ message: "removeUserFromGroupChat" });
-});
-
-export default { getAllUserChats, accessChat, createGroupChat, renameGroupChat, addUserToGroupChat, removeUserFromGroupChat };
+export default { getAllUserChats, accessChat };
