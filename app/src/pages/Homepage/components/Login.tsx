@@ -46,7 +46,8 @@ const Login = ({ setMode }: LoginProps) => {
 				password: password.value,
 			};
 			const { data } = await axios.post(`${BASE_URL}/user/login`, payload);
-			localStorage.setItem("userInfo", JSON.stringify(data));
+			localStorage.setItem("user", JSON.stringify(data));
+			customToast({ message: "Logged in successfully", type: "success" });
 			setLoading(false);
 			navigate("/chat");
 		} catch (error: any) {

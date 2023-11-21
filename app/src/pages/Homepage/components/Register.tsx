@@ -54,7 +54,8 @@ const Register = ({ setMode }: RegisterProps) => {
 				password: password.value,
 			};
 			const { data } = await axios.post(`${BASE_URL}/user`, payload);
-			localStorage.setItem("userInfo", JSON.stringify(data));
+			localStorage.setItem("user", JSON.stringify(data));
+			customToast({ message: "Registered successfully", type: "success" });
 			setLoading(false);
 			navigate("/chat");
 		} catch (error: any) {

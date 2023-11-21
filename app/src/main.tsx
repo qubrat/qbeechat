@@ -2,26 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Homepage from "./pages/Homepage/Homepage.tsx";
-import ErrorPage from "./pages/ErrorPage.tsx";
-import Chat from "./pages/Chat.tsx";
-
-const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <Homepage />,
-		errorElement: <ErrorPage />,
-	},
-	{
-		path: "/chat",
-		element: <Chat />,
-		errorElement: <ErrorPage />,
-	},
-]);
+import { BrowserRouter } from "react-router-dom";
+import App from "./App.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</React.StrictMode>
 );
