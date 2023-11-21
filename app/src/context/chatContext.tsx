@@ -9,6 +9,7 @@ type User = {
 	_id: string;
 	name: string;
 	email: string;
+	profilePicture: string;
 	token: string;
 };
 
