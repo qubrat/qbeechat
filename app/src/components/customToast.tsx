@@ -24,7 +24,7 @@ const customToast = ({ message, type }: ToastProps) => {
 						initial="hiddenToast"
 						animate="visibleToast"
 						exit="exitToast"
-						className={`toast relative flex items-center gap-4 px-10 py-6 pl-4 ${toastVariant.bg} text-slate-100 rounded-3xl max-w-md`}
+						className={`toast relative flex items-center gap-4 px-10 py-6 pl-4 ${toastVariant.bg} text-slate-100 rounded-3xl max-w-md shadow-2xl`}
 						key="toast"
 						role="alert"
 					>

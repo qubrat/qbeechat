@@ -23,7 +23,6 @@ export default {
 			warningDark: "#c24914",
 			success: "#03a65a",
 			successDark: "#005e38",
-			darkText: "#11151d",
 		},
 		fontFamily: {
 			logo: ["Montserrat", "sans-serif"],
