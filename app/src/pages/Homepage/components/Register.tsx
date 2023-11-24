@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
-import Input from "../../../components/Input";
-import PasswordInput from "../../../components/PasswordInput";
+import Input from "../../../components/Input/Input";
+import PasswordInput from "../../../components/Input/PasswordInput";
 import Button from "../../../components/Button";
 import customToast from "../../../components/customToast";
 import HomepageForm from "./HomepageForm";
