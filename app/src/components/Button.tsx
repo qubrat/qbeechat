@@ -30,7 +30,7 @@ const Button = ({ type, onClick, text, loading, variant }: SubmitButtonProps) =>
 			onClick={onClick}
 			disabled={loading}
 		>
-			{loading ? <Spinner size="small" /> : text}
+			{loading ? <Spinner size="small" /> : <span className="text-lg">{text}</span>}
 		</button>
 	);
 };

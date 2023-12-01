@@ -11,6 +11,10 @@ const Profile = () => {
 		window.location.reload();
 	};
 
+	const onInfo = () => {
+		console.log("info");
+	};
+
 	return (
 		<Dropdown>
 			<Dropdown.Button>
@@ -18,7 +22,7 @@ const Profile = () => {
 			</Dropdown.Button>
 			<Dropdown.ItemList position="left">
 				<Dropdown.ItemList.Item onClick={onLogout} text="Log out" icon="solar:logout-2-outline" />
-				<Dropdown.ItemList.Item onClick={() => console.log("info")} text="Info" icon="solar:info-circle-outline" />
+				<Dropdown.ItemList.Item onClick={onInfo} text="Info" icon="solar:info-circle-outline" />
 			</Dropdown.ItemList>
 		</Dropdown>
 	);
