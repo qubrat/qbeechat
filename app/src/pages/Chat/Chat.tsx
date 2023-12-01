@@ -1,4 +1,3 @@
-import React from "react";
 import { useChatContext } from "../../context/chatContext";
 import Navbar from "./components/Navbar";
 
