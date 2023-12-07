@@ -82,7 +82,7 @@ const Login = ({ setMode }: LoginProps) => {
 					<form onSubmit={handleSubmit} className="flex flex-col max-w-md gap-4 w-[448px]">
 						<Input icon="solar:letter-bold" type="text" label="Email" name="email" placeholder="Enter your email" {...email} required />
 						<PasswordInput label="Password" name="password" placeholder="Enter your password" {...password} required />
-						<Button type="submit" text="Log in" loading={loading} />
+						<Button type="submit" size="medium" variant="filled" text="Log in" loading={loading} width="1/2" />
 					</form>
 				</HomepageForm>
 				<img src={login} alt="" className="max-w-lg rounded-r-3xl" />

@@ -1,28 +1,23 @@
 type SpinnerProps = {
-	size: "standard" | "small" | "large";
-	color?: string;
-	styles?: string;
+	size: "medium" | "small" | "large";
+	color?: "light" | "dark";
 };
 
-export default function Spinner({ size, color, styles }: SpinnerProps) {
-	const getSize = () => {
-		switch (size) {
-			case "small":
-				return "h-6 w-6 border-2";
-			case "standard":
-				return "h-8 w-8 border-[3px]";
-			case "large":
-				return "h-12 w-12 border-4";
-			default:
-				return "h-6 w-6 border-2";
-		}
+export default function Spinner({ size, color = "light" }: SpinnerProps) {
+	const colors = {
+		light: "border-white",
+		dark: "border-slate-700",
+	};
+
+	const sizes = {
+		small: "h-3 w-3 border-2 m-0",
+		medium: "h-4 w-4 border-2 m-0",
+		large: "h-8 w-8 w-12 border-[3px] m-0",
 	};
 
 	return (
 		<div
-			className={`inline-block ${getSize()} animate-spin rounded-full border-solid border-${
-				color ? color : "current"
-			} border-r-transparent border-l-transparent align-[-0.125em] motion-reduce:animate-[spin_2s_linear_infinite] ${styles}`}
+			className={`inline-block ${sizes[size]} ${colors[color]} animate-spin rounded-full border-r-transparent border-l-transparent motion-reduce:animate-[spin_2s_linear_infinite]`}
 			role="status"
 		>
 			<span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"></span>

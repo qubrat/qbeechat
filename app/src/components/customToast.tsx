@@ -11,7 +11,7 @@ export type ToastProps = {
 const customToast = ({ message, type }: ToastProps) => {
 	const toastVariant = {
 		bg: type === "error" ? "bg-error" : type === "warning" ? "bg-warning" : "bg-success",
-		bgDark: type === "error" ? "bg-errorDark" : type === "warning" ? "bg-warningDark" : "bg-successDark",
+		bgDark: type === "error" ? "bg-error-800" : type === "warning" ? "bg-warning-800" : "bg-success-800",
 		icon: type === "error" ? "mingcute:close-fill" : type === "warning" ? "healthicons:alert" : "mingcute:check-fill",
 		title: type === "error" ? "Oh snap!" : type === "warning" ? "Warning!" : "Well done!",
 	};

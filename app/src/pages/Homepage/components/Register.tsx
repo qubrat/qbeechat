@@ -94,7 +94,7 @@ const Register = ({ setMode }: RegisterProps) => {
 							<PasswordInput label="Password" name="password" placeholder="Enter password" {...password} />
 							<PasswordInput label="Confirm password" name="confirmPassword" placeholder="Confirm password" {...confirmPassword} />
 						</div>
-						<Button type="submit" text="Register" loading={loading} />
+						<Button type="submit" size="medium" variant="filled" text="Register" loading={loading} width="1/2" />
 					</form>
 				</HomepageForm>
 				<img src={register} alt="" className="max-w-lg rounded-r-3xl" />
