@@ -10,6 +10,7 @@ export default {
 			slate: colors.slate,
 			white: colors.white,
 			black: colors.black,
+			text: "#181818",
 			// primary: {
 			// 	DEFAULT: "#1d90f5",
 			// 	100: "#dce9f5",

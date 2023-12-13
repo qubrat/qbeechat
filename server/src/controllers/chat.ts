@@ -9,9 +9,9 @@ const getAllUserChats = expressAsyncHandler(async (req: Request, res: Response) 
 		let chats: unknown = await Chat.find({ users: { $elemMatch: { $eq: req.body.user?._id } } })
 			.populate("users", "-password")
 			.populate("groupAdmin", "-password")
-			.populate("latestMessage")
+			.populate("lastMessage")
 			.sort({ updatedAt: -1 });
-		chats = await User.populate(chats, { path: "latestMessage.sender", select: "name email profilePicture" });
+		chats = await User.populate(chats, { path: "lastMessage.sender", select: "name email profilePicture" });
 		res.status(200).json(chats);
 	} catch (error: any) {
 		res.status(400);

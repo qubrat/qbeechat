@@ -35,7 +35,7 @@ const PasswordInput: FC<PasswordInputProps> = ({ label, value, name, placeholder
 				{label}
 			</label>
 			<button type="button" className="absolute font-bold rounded-md right-5 top-5 text-slate-400" onClick={toggleHidden}>
-				{<Icon icon={hidden ? "solar:eye-bold" : "solar:eye-closed-bold"} width="24" height="24" />}
+				{<Icon icon={hidden ? "solar:eye-bold-duotone" : "solar:eye-closed-bold-duotone"} width="24" height="24" />}
 			</button>
 
 			{errorMessage && <p className="mt-2 ml-3 text-red-600">{errorMessage}</p>}

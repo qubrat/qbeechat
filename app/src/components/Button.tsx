@@ -19,7 +19,7 @@ const Button = ({ type, onClick, text, loading, variant = "filled", color = "pri
 		filled: {
 			primary: "bg-primary-500 text-slate-100 ring-4 ring-transparent hover:ring-primary-200 active:bg-primary-700",
 			success: "bg-success-500 text-slate-100 ring-4 ring-transparent hover:ring-success-200 active:bg-success-700",
-			warning: "bg-warning-500 text-slate-700 ring-4 ring-transparent hover:ring-warning-200 active:bg-warning-700",
+			warning: "bg-warning-500 text-slate-800 ring-4 ring-transparent hover:ring-warning-200 active:bg-warning-700",
 			error: "bg-error-500 text-slate-100 ring-4 ring-transparent hover:ring-error-200 active:bg-error-700",
 		},
 		outline: {
@@ -55,9 +55,7 @@ const Button = ({ type, onClick, text, loading, variant = "filled", color = "pri
 	return (
 		<button
 			type={type}
-			className={`${sizes[size]} ${variants[variant][color]} ${widths[width]} rounded-full font-bold transition ${
-				loading ? "cursor-default opacity-75" : ""
-			}`}
+			className={`${sizes[size]} ${variants[variant][color]} ${widths[width]} rounded-full font-bold transition disabled:cursor-default disabled:opacity-70`}
 			onClick={onClick}
 			disabled={loading}
 		>

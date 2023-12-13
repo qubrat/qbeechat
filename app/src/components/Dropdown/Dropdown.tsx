@@ -29,9 +29,7 @@ const Dropdown = ({ children }: DropdownProps) => {
 
 	return (
 		<DropdownContext.Provider value={{ visible, toggleDropdown }}>
-			<div ref={ref} className="relative">
-				{children}
-			</div>
+			<div ref={ref}>{children}</div>
 		</DropdownContext.Provider>
 	);
 };

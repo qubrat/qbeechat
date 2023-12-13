@@ -13,21 +13,34 @@ type User = {
 	token: string;
 };
 
+type Chat = {
+	chatName: string;
+	isGroupChat: boolean;
+	users: string[];
+	lastMessage?: string;
+	groupAdmin?: string;
+};
+
 type ChatContext = {
 	user: User | null;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
+	selectedChat: Chat | null;
+	setSelectedChat: React.Dispatch<React.SetStateAction<Chat | null>>;
+	chats: Chat[] | null;
+	setChats: React.Dispatch<React.SetStateAction<Chat[] | null>>;
 };
 
 const ChatContext = createContext<ChatContext | null>(null);
 
 export const ChatContextProvider = ({ children }: ChatContextProviderProps) => {
 	const [user, setUser] = useState<User | null>(null);
+	const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+	const [chats, setChats] = useState<Chat[] | null>(null);
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		const user: User = JSON.parse(localStorage.getItem("user") || "{}");
-		console.log(user._id);
 		setUser(user);
 
 		if (!user._id) {
@@ -35,7 +48,7 @@ export const ChatContextProvider = ({ children }: ChatContextProviderProps) => {
 		}
 	}, [navigate]);
 
-	return <ChatContext.Provider value={{ user, setUser }}>{children}</ChatContext.Provider>;
+	return <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats }}>{children}</ChatContext.Provider>;
 };
 
 export const useChatContext = () => {

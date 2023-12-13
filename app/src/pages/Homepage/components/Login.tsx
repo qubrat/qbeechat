@@ -80,7 +80,15 @@ const Login = ({ setMode }: LoginProps) => {
 					modeLink="register"
 				>
 					<form onSubmit={handleSubmit} className="flex flex-col max-w-md gap-4 w-[448px]">
-						<Input icon="solar:letter-bold" type="text" label="Email" name="email" placeholder="Enter your email" {...email} required />
+						<Input
+							icon="solar:letter-bold-duotone"
+							type="text"
+							label="Email"
+							name="email"
+							placeholder="Enter your email"
+							{...email}
+							required
+						/>
 						<PasswordInput label="Password" name="password" placeholder="Enter your password" {...password} required />
 						<Button type="submit" size="medium" variant="filled" text="Log in" loading={loading} width="1/2" />
 					</form>

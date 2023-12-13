@@ -88,8 +88,8 @@ const Register = ({ setMode }: RegisterProps) => {
 					modeLink="login"
 				>
 					<form onSubmit={handleSubmit} className="flex flex-col max-w-md gap-6 w-[448px]">
-						<Input icon="solar:user-hand-up-bold" type="text" label="Enter your name" name="name" placeholder="Name" {...name} />
-						<Input icon="solar:letter-bold" type="text" label="Email" name="email" placeholder="Enter your email" {...email} />
+						<Input icon="solar:user-hand-up-bold-duotone" type="text" label="Enter your name" name="name" placeholder="Name" {...name} />
+						<Input icon="solar:letter-bold-duotone" type="text" label="Email" name="email" placeholder="Enter your email" {...email} />
 						<div className="flex gap-4">
 							<PasswordInput label="Password" name="password" placeholder="Enter password" {...password} />
 							<PasswordInput label="Confirm password" name="confirmPassword" placeholder="Confirm password" {...confirmPassword} />

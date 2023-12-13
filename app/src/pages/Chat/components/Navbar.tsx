@@ -1,7 +1,7 @@
 import React from "react";
-import Logo from "../../../components/Logo";
-import Profile from "./Profile";
-import Search from "./Search";
+import { Logo } from "../../../components/Logo";
+import Profile from "./Sidebar/Profile";
+import Search from "./Navbar/Search";
 
 const Colors = () => {
 	return (
@@ -19,9 +19,7 @@ const Navbar = () => {
 	return (
 		<div className="fixed top-0 right-0 z-10 flex items-center justify-between w-full px-4 py-6 lg:p-8">
 			<Logo />
-			<Search />
 			<Profile />
-			{/* <Colors /> */}
 		</div>
 	);
 };

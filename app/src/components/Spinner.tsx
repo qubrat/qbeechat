@@ -1,12 +1,14 @@
 type SpinnerProps = {
 	size: "medium" | "small" | "large";
-	color?: "light" | "dark";
+	color?: "light" | "dark" | "grey" | "primary";
 };
 
 export default function Spinner({ size, color = "light" }: SpinnerProps) {
 	const colors = {
 		light: "border-white",
-		dark: "border-slate-700",
+		dark: "border-slate-800",
+		grey: "border-slate-400",
+		primary: "border-primary",
 	};
 
 	const sizes = {
