@@ -45,7 +45,7 @@ const ExpandableSearch = () => {
 				</motion.div>
 			</div>
 			<button type="button" aria-label="Expand search" onClick={handleMagnifier} className="transition text-slate-400 hover:text-slate-600">
-				<Icon icon={`${isExpanded ? "solar:close-square-bold-duotone" : "solar:magnifer-bold-duotone"}`} width="28" height="28" />
+				<Icon icon="solar:magnifer-bold-duotone" width="28" height="28" />
 			</button>
 		</div>
 	);
