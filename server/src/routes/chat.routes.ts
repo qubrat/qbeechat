@@ -1,7 +1,7 @@
 import "module-alias/register";
 import express from "express";
-import controller from "@/controllers/chat";
-import groupRoutes from "@/routes/group";
+import controller from "@/controllers/chat.controllers";
+import groupRoutes from "@/routes/group.routes";
 import { authorize } from "@/middleware/auth";
 
 const router = express.Router();

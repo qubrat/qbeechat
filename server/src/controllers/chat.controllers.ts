@@ -1,9 +1,12 @@
 import "module-alias/register";
-import { Chat } from "@/models/chat";
+import { Chat } from "@/models/chat.model";
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { User } from "@/models/user";
+import { User } from "@/models/user.model";
 
+// @desc    Get all user chats
+// @route   GET /api/v1/chat
+// @access  Private
 const getAllUserChats = expressAsyncHandler(async (req: Request, res: Response) => {
 	try {
 		let chats: unknown = await Chat.find({ users: { $elemMatch: { $eq: req.body.user?._id } } })
@@ -19,6 +22,9 @@ const getAllUserChats = expressAsyncHandler(async (req: Request, res: Response) 
 	}
 });
 
+// @desc    Access a chat - create if it doesn't exist, otherwise return it
+// @route   POST /api/v1/chat/access
+// @access  Private
 const accessChat = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { userId } = req.body;
 	if (!userId) {

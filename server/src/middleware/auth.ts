@@ -1,29 +1,29 @@
 import jwt from "jsonwebtoken";
-import { User } from "@/models/user";
+import { UserTypeDecoded } from "@/models/user.model";
 import expressAsyncHandler from "express-async-handler";
 import { NextFunction, Request, Response } from "express";
-import { Log } from "@/services/logger";
-
-interface JwtPayload {
-	id: string;
-}
+import { UserError } from "@/library/errors";
+import { config } from "@/config/config";
 
 export const authorize = expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-	let token;
+	const authHeader = req.headers.authorization;
 
-	if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-		try {
-			token = req.headers.authorization.split(" ")[1];
-			const decode = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-			req.body.user = await User.findById(decode.id).select("-password");
-			next();
-		} catch (error) {
-			res.status(401);
-			throw new Error("Not authorized, token failed");
-		}
-	}
-	if (!token) {
+	if (!authHeader?.startsWith("Bearer ")) {
 		res.status(401);
-		throw new Error("Not authorized, no token");
+		throw new UserError("Unauthorized", "AUTH_ERROR");
+	}
+	const token = authHeader.split(" ")[1];
+	try {
+		const decoded = jwt.verify(token, config.jwtTokenSecret.access || "supersecrettoken") as UserTypeDecoded;
+		req.body.user = decoded.user;
+		next();
+	} catch (error) {
+		if (error instanceof jwt.TokenExpiredError) {
+			res.status(403);
+			throw new UserError("Token expired", "FORBIDDEN");
+		} else {
+			res.status(400);
+			throw new Error(error as string);
+		}
 	}
 });

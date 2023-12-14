@@ -1,8 +1,11 @@
 import "module-alias/register";
-import { Chat } from "@/models/chat";
+import { Chat } from "@/models/chat.model";
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 
+// @desc    Create a group chat
+// @route   POST /api/v1/chat/group
+// @access  Private
 const createGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { name, users, user } = req.body;
 
@@ -26,6 +29,9 @@ const createGroupChat = expressAsyncHandler(async (req: Request, res: Response) 
 	res.status(201).json(fullChat);
 });
 
+// @desc    Rename a group chat
+// @route   PUT /api/v1/chat/group/rename
+// @access  Private
 const renameGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { chatId, newName, user } = req.body;
 
@@ -41,6 +47,9 @@ const renameGroupChat = expressAsyncHandler(async (req: Request, res: Response) 
 	res.status(200).json(updatedChat);
 });
 
+// @desc    Add a user to a group chat
+// @route   PUT /api/v1/chat/group/user/add
+// @access  Private
 const addUserToGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { chatId, userId } = req.body;
 
@@ -61,6 +70,9 @@ const addUserToGroupChat = expressAsyncHandler(async (req: Request, res: Respons
 	}
 });
 
+// @desc    Remove a user from a group chat
+// @route   PUT /api/v1/chat/group/user/remove
+// @access  Private
 const removeUserFromGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { chatId, userId, user } = req.body;
 

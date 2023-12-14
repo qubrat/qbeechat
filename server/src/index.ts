@@ -1,14 +1,16 @@
 import "module-alias/register";
 import express from "express";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import { config } from "@/config/config";
 import { Log } from "@/services/logger";
 
 import { rules } from "@/middleware/rules";
 import { logTraffic } from "@/middleware/logTraffic";
 
-import chat from "@/routes/chat";
-import user from "@/routes/user";
+import chat from "@/routes/chat.routes";
+import user from "@/routes/user.routes";
+import auth from "@/routes/auth.routes";
 
 import error from "@/middleware/error";
 
@@ -26,8 +28,14 @@ const connectToMongo = async () => {
 	}
 };
 
+const healthcheck = (req: express.Request, res: express.Response) => {
+	res.status(200).json({ message: "API version 1.0" });
+	Log.debug("Health check - API server is running.");
+};
+
 const startServer = async () => {
 	// Middleware
+	server.use(cookieParser());
 	server.use(express.json());
 	server.use(express.urlencoded({ extended: true }));
 	//Custom Middleware
@@ -36,10 +44,8 @@ const startServer = async () => {
 	// Routes
 	server.use("/api/v1/user", user);
 	server.use("/api/v1/chat", chat);
-	server.get("/api/v1", (req: express.Request, res: express.Response) => {
-		res.status(200).json({ message: "API version 1.0" });
-		Log.debug("Health check - API server is running.");
-	});
+	server.use("/api/v1/auth", auth);
+	server.get("/api/v1", healthcheck);
 
 	// Error Handling
 	server.use(error.notFound);

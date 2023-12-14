@@ -1,5 +1,16 @@
-import { Model, Schema, model } from "mongoose";
+import { Model, Schema, model, Types } from "mongoose";
 import { compare, genSalt, hash } from "bcryptjs";
+
+export type UserType = {
+	id: Types.ObjectId;
+	name: string;
+	email: string;
+	profilePicture: string;
+};
+
+export type UserTypeDecoded = {
+	user: UserType;
+};
 
 export interface IUser {
 	name: string;

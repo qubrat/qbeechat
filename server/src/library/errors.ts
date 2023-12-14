@@ -1,4 +1,13 @@
-type ErrorType = "USER_NOT_FOUND" | "REGISTER_ERROR" | "AUTH_ERROR" | "MISSING_FIELDS" | "USER_EXISTS" | "INVALID_DATA" | "INVALID_CREDENTIALS";
+type ErrorType =
+	| "USER_NOT_FOUND"
+	| "REGISTER_ERROR"
+	| "AUTH_ERROR"
+	| "MISSING_FIELDS"
+	| "USER_EXISTS"
+	| "INVALID_DATA"
+	| "INVALID_CREDENTIALS"
+	| "UNAUTHORIZED"
+	| "FORBIDDEN";
 
 export class UserError extends Error {
 	code: string;
