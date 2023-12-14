@@ -25,7 +25,7 @@ const Input: FC<InputProps> = ({ type, label, value, name, icon, placeholder, er
 				onChange={onChange}
 				disabled={disabled}
 				type={type}
-				className={`input-w-label w-full px-6 pb-2 border-4 border-slate-200 pt-6 outline-none appearance-none text-slate-800 font-bold rounded-2xl bg-slate-200 focus:bg-white transition duration-200 focus:ring-2 focus:ring-primary ring-inset`}
+				className="w-full px-6 pt-6 pb-2 font-bold transition duration-200 border-4 outline-none appearance-none input-w-label border-slate-200 text-slate-800 rounded-2xl bg-slate-200 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-inset"
 			/>
 			<label htmlFor={label} className={`absolute text-sm input-label top-3 left-7 text-slate-400 ${required ? "required" : ""}`}>
 				{label}

@@ -12,8 +12,8 @@ const Avatar = ({ image, size = "md", status }: AvatarProps) => {
 	};
 
 	const statusColors = {
-		online: "bg-success-500",
-		offline: "bg-error-300",
+		online: "bg-online",
+		offline: "bg-offline",
 	};
 
 	return image ? (

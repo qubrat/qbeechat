@@ -11,6 +11,8 @@ export default {
 			white: colors.white,
 			black: colors.black,
 			text: "#181818",
+			online: "#90e150",
+			offline: "#f2657e",
 			// primary: {
 			// 	DEFAULT: "#1d90f5",
 			// 	100: "#dce9f5",
