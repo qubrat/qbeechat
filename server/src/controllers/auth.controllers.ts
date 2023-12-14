@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { UserError } from "@/library/errors";
 import { generateAccessToken, generateRefreshToken } from "@/library/jwt";
+import { config } from "@/config/config";
 
 // @desc    Login user
 // @route   POST /api/v1/auth
@@ -89,7 +90,7 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
 	const refreshToken = cookies.jwt;
 
 	try {
-		const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || "supersecrettoken") as UserTypeDecoded;
+		const decoded = jwt.verify(refreshToken, config.jwtTokenSecret.refresh || "supersecrettoken") as UserTypeDecoded;
 
 		const user = await User.findById(decoded.user.id);
 		if (!user) {
