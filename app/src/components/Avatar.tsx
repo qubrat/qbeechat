@@ -12,8 +12,8 @@ const Avatar = ({ image, size = "md", status }: AvatarProps) => {
 	};
 
 	const statusColors = {
-		online: "bg-online",
-		offline: "bg-offline",
+		online: "bg-green",
+		offline: "bg-red",
 	};
 
 	return image ? (

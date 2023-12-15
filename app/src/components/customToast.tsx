@@ -5,16 +5,31 @@ import toast from "react-hot-toast";
 
 export type ToastProps = {
 	message: string;
-	type: "success" | "error" | "warning";
+	variant: "success" | "error" | "warning";
 };
 
-const customToast = ({ message, type }: ToastProps) => {
-	const toastVariant = {
-		bg: type === "error" ? "bg-error" : type === "warning" ? "bg-warning" : "bg-success",
-		bgDark: type === "error" ? "bg-error-800" : type === "warning" ? "bg-warning-800" : "bg-success-800",
-		icon: type === "error" ? "mingcute:close-fill" : type === "warning" ? "healthicons:alert" : "mingcute:check-fill",
-		title: type === "error" ? "Oh snap!" : type === "warning" ? "Warning!" : "Well done!",
+const customToast = ({ message, variant }: ToastProps) => {
+	const toastVariants = {
+		success: {
+			background: "bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-green-accent to-green",
+			iconBackground: "bg-green-dark",
+			icon: "mingcute:check-fill",
+			text: "Well done!",
+		},
+		error: {
+			background: "bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-red-accent to-red",
+			iconBackground: "bg-red-dark",
+			icon: "mingcute:close-fill",
+			text: "Oh snap!",
+		},
+		warning: {
+			background: "bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-orange-accent to-orange",
+			iconBackground: "bg-orange-dark",
+			icon: "healthicons:alert",
+			text: "Warning!",
+		},
 	};
+
 	toast.custom(
 		(t) => (
 			<>
@@ -24,15 +39,15 @@ const customToast = ({ message, type }: ToastProps) => {
 						initial="hiddenToast"
 						animate="visibleToast"
 						exit="exitToast"
-						className={`toast relative flex items-center gap-4 px-10 py-6 pl-4 ${toastVariant.bg} text-slate-100 rounded-3xl max-w-md shadow-2xl`}
+						className={`toast relative flex items-center gap-4 px-10 py-6 pl-4 text-slate-100 rounded-3xl max-w-md shadow-2xl ${toastVariants[variant].background}`}
 						key="toast"
 						role="alert"
 					>
-						<div className={`p-2 rounded-full ${toastVariant.bgDark}`}>
-							<Icon icon={toastVariant.icon} width="28" height="28" />
+						<div className={`p-2 rounded-full ${toastVariants[variant].iconBackground}`}>
+							<Icon icon={toastVariants[variant].icon} width="28" height="28" />
 						</div>
 						<div className="text-left">
-							<p className="text-xl font-bold">{toastVariant.title}</p>
+							<p className="text-xl font-bold">{toastVariants[variant].text}</p>
 							<p>{message}</p>
 						</div>
 						<button

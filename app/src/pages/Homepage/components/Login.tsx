@@ -30,13 +30,13 @@ const Login = ({ setMode }: LoginProps) => {
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
-		if (!email.value?.trim() && !password.value?.trim()) {
-			customToast({ message: "Please provide email and password", type: "warning" });
+		if (!email.value?.trim() || !password.value?.trim()) {
+			customToast({ message: "Please provide email and password", variant: "warning" });
 			setLoading(false);
 			return;
 		}
 		if (!email.value?.includes("@") && email.value?.trim()) {
-			customToast({ message: "Please provide a valid email", type: "warning" });
+			customToast({ message: "Please provide a valid email", variant: "warning" });
 			setLoading(false);
 			return;
 		}
@@ -47,13 +47,13 @@ const Login = ({ setMode }: LoginProps) => {
 			};
 			const { data } = await axios.post(`${BASE_URL}/auth`, payload);
 			localStorage.setItem("user", JSON.stringify(data));
-			customToast({ message: "Logged in successfully", type: "success" });
+			customToast({ message: "Logged in successfully", variant: "success" });
 			setLoading(false);
 			navigate("/chat");
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.code === "INVALID_CREDENTIALS") {
-				customToast({ message: "Wrong email or password", type: "error" });
+				customToast({ message: "Wrong email or password", variant: "error" });
 			}
 		} finally {
 			setLoading(false);
@@ -90,7 +90,7 @@ const Login = ({ setMode }: LoginProps) => {
 							required
 						/>
 						<PasswordInput label="Password" name="password" placeholder="Enter your password" {...password} required />
-						<Button type="submit" size="medium" variant="filled" text="Log in" loading={loading} width="1/2" />
+						<Button type="submit" size="medium" text="Log in" loading={loading} width="1/2" />
 					</form>
 				</HomepageForm>
 				<img src={login} alt="" className="max-w-lg rounded-r-3xl" />

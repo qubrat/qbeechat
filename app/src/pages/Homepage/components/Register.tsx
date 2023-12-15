@@ -33,17 +33,17 @@ const Register = ({ setMode }: RegisterProps) => {
 		e.preventDefault();
 		setLoading(true);
 		if (!email.value?.trim() || !password.value?.trim() || !confirmPassword.value?.trim() || !name.value?.trim()) {
-			customToast({ message: "Please provide all the details", type: "warning" });
+			customToast({ message: "Please provide all the details", variant: "warning" });
 			setLoading(false);
 			return;
 		}
 		if (!email.value?.includes("@") && email.value?.trim()) {
-			customToast({ message: "Please provide a valid email", type: "warning" });
+			customToast({ message: "Please provide a valid email", variant: "warning" });
 			setLoading(false);
 			return;
 		}
 		if (password.value?.trim() !== confirmPassword.value?.trim()) {
-			customToast({ message: "Passwords do not match", type: "error" });
+			customToast({ message: "Passwords do not match", variant: "error" });
 			setLoading(false);
 			return;
 		}
@@ -55,13 +55,13 @@ const Register = ({ setMode }: RegisterProps) => {
 			};
 			const { data } = await axios.post(`${BASE_URL}/auth/register`, payload);
 			localStorage.setItem("user", JSON.stringify(data));
-			customToast({ message: "Registered successfully", type: "success" });
+			customToast({ message: "Registered successfully", variant: "success" });
 			setLoading(false);
 			navigate("/chat");
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.code === "USER_EXISTS") {
-				customToast({ message: "User with provided email already exists", type: "error" });
+				customToast({ message: "User with provided email already exists", variant: "error" });
 			}
 		} finally {
 			setLoading(false);
@@ -94,7 +94,7 @@ const Register = ({ setMode }: RegisterProps) => {
 							<PasswordInput label="Password" name="password" placeholder="Enter password" {...password} />
 							<PasswordInput label="Confirm password" name="confirmPassword" placeholder="Confirm password" {...confirmPassword} />
 						</div>
-						<Button type="submit" size="medium" variant="filled" text="Register" loading={loading} width="1/2" />
+						<Button type="submit" size="medium" text="Register" loading={loading} width="1/2" />
 					</form>
 				</HomepageForm>
 				<img src={register} alt="" className="max-w-lg rounded-r-3xl" />

@@ -17,10 +17,10 @@ const Button = ({ type, onClick, text, loading, variant = "filled", color = "pri
 
 	const variants = {
 		filled: {
-			primary: "bg-primary-500 text-slate-100 ring-4 ring-transparent hover:ring-primary-200 active:bg-primary-700",
-			success: "bg-success-500 text-slate-100 ring-4 ring-transparent hover:ring-success-200 active:bg-success-700",
-			warning: "bg-warning-500 text-slate-800 ring-4 ring-transparent hover:ring-warning-200 active:bg-warning-700",
-			error: "bg-error-500 text-slate-100 ring-4 ring-transparent hover:ring-error-200 active:bg-error-700",
+			primary: "bg-primary text-slate-100 ring-4 ring-transparent hover:ring-primary-200 active:bg-primary-500",
+			success: "bg-green text-slate-100 ring-4 ring-transparent hover:ring-green-light active:bg-green-accent",
+			warning: "bg-orange text-slate-800 ring-4 ring-transparent hover:ring-orange-light active:bg-orange-accent",
+			error: "bg-red text-slate-100 ring-4 ring-transparent hover:ring-red-light active:bg-red-accent",
 		},
 		outline: {
 			primary: outline,
@@ -29,10 +29,10 @@ const Button = ({ type, onClick, text, loading, variant = "filled", color = "pri
 			error: outline,
 		},
 		text: {
-			primary: "bg-transparent text-primary-500 hover:bg-primary-100 active:bg-primary-200",
-			success: "bg-transparent text-success-500 hover:bg-success-100 active:bg-success-200",
-			warning: "bg-transparent text-warning-500 hover:bg-warning-100 active:bg-warning-200",
-			error: "bg-transparent text-error-500 hover:bg-error-100 active:bg-error-200",
+			primary: "bg-transparent text-primary hover:bg-primary-100 active:bg-primary-200",
+			success: "bg-transparent text-green hover:bg-green-white active:bg-green-light",
+			warning: "bg-transparent text-orange hover:bg-orange-white active:bg-orange-light",
+			error: "bg-transparent text-red hover:bg-red-white active:bg-red-light",
 		},
 	};
 
