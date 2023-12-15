@@ -1,4 +1,4 @@
-import { User, UserType, UserTypeDecoded } from "@/models/user.model";
+import { User, UserType } from "@/models/user.model";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
@@ -29,15 +29,8 @@ const login = asyncHandler(async (req, res) => {
 			throw new UserError("User does not exist", "USER_NOT_FOUND");
 		}
 
-		const signedUser: UserType = {
-			id: user._id,
-			name: user.name,
-			email: user.email,
-			profilePicture: user.profilePicture,
-		};
-
-		const accessToken = generateAccessToken(signedUser);
-		const refreshToken = generateRefreshToken(signedUser);
+		const accessToken = generateAccessToken({ id: user._id });
+		const refreshToken = generateRefreshToken({ id: user._id });
 
 		res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 7 });
 		res.status(200).json({ accessToken });
@@ -62,16 +55,9 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 
 	const user = await User.create({ name, email, password, profilePicture });
 
-	const signedUser = {
-		id: user._id,
-		name: user.name,
-		email: user.email,
-		profilePicture: user.profilePicture,
-	};
-
 	if (user) {
-		const accessToken = generateAccessToken(signedUser);
-		const refreshToken = generateRefreshToken(signedUser);
+		const accessToken = generateAccessToken({ id: user._id });
+		const refreshToken = generateRefreshToken({ id: user._id });
 
 		res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 7 });
 		res.status(200).json({ accessToken });
@@ -95,22 +81,15 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
 	const refreshToken = cookies.jwt;
 
 	try {
-		const decoded = jwt.verify(refreshToken, config.jwtTokenSecret.refresh || "supersecrettoken") as UserTypeDecoded;
+		const decoded = jwt.verify(refreshToken, config.jwtTokenSecret.refresh || "supersecrettoken") as UserType;
 
-		const user = await User.findById(decoded.user.id);
+		const user = await User.findById(decoded.id);
 		if (!user) {
 			res.status(401);
 			throw new UserError("User does not exist", "USER_NOT_FOUND");
 		}
 
-		const signedUser: UserType = {
-			id: user._id,
-			name: user.name,
-			email: user.email,
-			profilePicture: user.profilePicture,
-		};
-
-		const accessToken = generateAccessToken(signedUser);
+		const accessToken = generateAccessToken({ id: user._id });
 
 		res.status(200).json({ accessToken });
 	} catch (err) {

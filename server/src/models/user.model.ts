@@ -3,13 +3,6 @@ import { compare, genSalt, hash } from "bcryptjs";
 
 export type UserType = {
 	id: Types.ObjectId;
-	name: string;
-	email: string;
-	profilePicture: string;
-};
-
-export type UserTypeDecoded = {
-	user: UserType;
 };
 
 export interface IUser {

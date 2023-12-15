@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserTypeDecoded } from "@/models/user.model";
+import { UserType } from "@/models/user.model";
 import expressAsyncHandler from "express-async-handler";
 import { NextFunction, Request, Response } from "express";
 import { UserError } from "@/library/errors";
@@ -14,8 +14,8 @@ export const authorize = expressAsyncHandler(async (req: Request, res: Response,
 	}
 	const token = authHeader.split(" ")[1];
 	try {
-		const decoded = jwt.verify(token, config.jwtTokenSecret.access || "supersecrettoken") as UserTypeDecoded;
-		req.body.user = decoded.user;
+		const decoded = jwt.verify(token, config.jwtTokenSecret.access || "supersecrettoken") as UserType;
+		req.body.user.id = decoded.id;
 		next();
 	} catch (error) {
 		if (error instanceof jwt.TokenExpiredError) {
