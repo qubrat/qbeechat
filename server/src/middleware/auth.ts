@@ -10,7 +10,7 @@ export const authorize = expressAsyncHandler(async (req: Request, res: Response,
 
 	if (!authHeader?.startsWith("Bearer ")) {
 		res.status(401);
-		throw new UserError("Unauthorized", "AUTH_ERROR");
+		throw new UserError("Unauthorized - no token", "AUTH_ERROR");
 	}
 	const token = authHeader.split(" ")[1];
 	try {

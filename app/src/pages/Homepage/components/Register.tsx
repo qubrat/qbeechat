@@ -53,7 +53,7 @@ const Register = ({ setMode }: RegisterProps) => {
 				email: email.value,
 				password: password.value,
 			};
-			const { data } = await axios.post(`${BASE_URL}/user`, payload);
+			const { data } = await axios.post(`${BASE_URL}/auth/register`, payload);
 			localStorage.setItem("user", JSON.stringify(data));
 			customToast({ message: "Registered successfully", type: "success" });
 			setLoading(false);

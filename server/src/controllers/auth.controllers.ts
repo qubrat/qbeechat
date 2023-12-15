@@ -13,15 +13,20 @@ const login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		res.status(400);
-		throw new UserError("Please provide all required fields", "MISSING_FIELDS");
+		throw new UserError("Did not provide all required fields", "MISSING_FIELDS");
 	} else {
 		const user = await User.findOne({ email });
 
 		const match = await user?.matchPassword(password);
 
-		if (!match || !user) {
+		if (!match) {
 			res.status(401);
-			throw new UserError("Unauthorized", "AUTH_ERROR");
+			throw new UserError("Bad credentials", "INVALID_CREDENTIALS");
+		}
+
+		if (!user) {
+			res.status(401);
+			throw new UserError("User does not exist", "USER_NOT_FOUND");
 		}
 
 		const signedUser: UserType = {
@@ -71,7 +76,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 		res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 7 });
 		res.status(200).json({ accessToken });
 	} else {
-		res.status(400).json({ message: "Invalid user data", code: "INVALID_DATA" });
+		res.status(400);
 		throw new UserError("Provided invalid user data", "INVALID_DATA");
 	}
 });
@@ -84,7 +89,7 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
 
 	if (!cookies.jwt) {
 		res.status(401);
-		throw new UserError("Unauthorized", "AUTH_ERROR");
+		throw new UserError("Unauthorized - no token", "AUTH_ERROR");
 	}
 
 	const refreshToken = cookies.jwt;
@@ -95,7 +100,7 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
 		const user = await User.findById(decoded.user.id);
 		if (!user) {
 			res.status(401);
-			throw new UserError("Unauthorized", "UNAUTHORIZED");
+			throw new UserError("User does not exist", "USER_NOT_FOUND");
 		}
 
 		const signedUser: UserType = {

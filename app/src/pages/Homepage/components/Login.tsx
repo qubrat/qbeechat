@@ -45,7 +45,7 @@ const Login = ({ setMode }: LoginProps) => {
 				email: email.value,
 				password: password.value,
 			};
-			const { data } = await axios.post(`${BASE_URL}/user/login`, payload);
+			const { data } = await axios.post(`${BASE_URL}/auth`, payload);
 			localStorage.setItem("user", JSON.stringify(data));
 			customToast({ message: "Logged in successfully", type: "success" });
 			setLoading(false);
