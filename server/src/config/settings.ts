@@ -1,4 +1,4 @@
 export const tokenExpirationTime = {
-	access: "1m",
+	access: "15m",
 	refresh: "7d",
 };

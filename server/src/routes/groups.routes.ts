@@ -1,6 +1,6 @@
 import "module-alias/register";
 import { authorize } from "@/middleware/auth";
-import controller from "@/controllers/group.controllers";
+import controller from "@/controllers/groups.controllers";
 import express from "express";
 
 const router = express.Router();

@@ -3,7 +3,6 @@ import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import { User } from "@/models/user.model";
 import { UserError } from "@/library/errors";
-import { generateAccessToken, generateRefreshToken } from "@/library/jwt";
 
 // @desc    Get all users
 // @route   GET /api/v1/user
@@ -18,7 +17,9 @@ const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 		  }
 		: {};
 
-	const users = await User.find(keyword).find({ _id: { $ne: req.body.user?.id } });
+	const users = await User.find(keyword)
+		.find({ _id: { $ne: req.body.user?.id } })
+		.select("-password");
 	res.status(200).json(users);
 });
 
@@ -26,7 +27,7 @@ const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 // @route   GET /api/v1/user/:id
 // @access  Private
 const getUser = asyncHandler(async (req: Request, res: Response) => {
-	const user = await User.findById(req.params.id);
+	const user = await User.findById(req.params.id).select("-password");
 	if (user) {
 		res.status(200).json(user);
 	} else {

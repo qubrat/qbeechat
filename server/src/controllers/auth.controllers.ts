@@ -25,7 +25,7 @@ const login = asyncHandler(async (req, res) => {
 		}
 
 		if (!user) {
-			res.status(401);
+			res.status(404);
 			throw new UserError("User does not exist", "USER_NOT_FOUND");
 		}
 
@@ -85,7 +85,7 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
 
 		const user = await User.findById(decoded.id);
 		if (!user) {
-			res.status(401);
+			res.status(404);
 			throw new UserError("User does not exist", "USER_NOT_FOUND");
 		}
 

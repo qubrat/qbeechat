@@ -8,8 +8,8 @@ import { Log } from "@/services/logger";
 import { rules } from "@/middleware/rules";
 import { logTraffic } from "@/middleware/logTraffic";
 
-import chat from "@/routes/chat.routes";
-import user from "@/routes/user.routes";
+import chat from "@/routes/chats.routes";
+import user from "@/routes/users.routes";
 import auth from "@/routes/auth.routes";
 
 import error from "@/middleware/error";
@@ -42,8 +42,8 @@ const startServer = async () => {
 	server.use(rules);
 	server.use(logTraffic);
 	// Routes
-	server.use("/api/v1/user", user);
-	server.use("/api/v1/chat", chat);
+	server.use("/api/v1/users", user);
+	server.use("/api/v1/chats", chat);
 	server.use("/api/v1/auth", auth);
 	server.get("/api/v1", healthcheck);
 
