@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { expandableInput } from "../animation/expandableInput";
+import { expandableInput } from "../../animation/expandableInput";
 
 const ExpandableSearch = () => {
 	const [isExpanded, setIsExpanded] = useState(false);
@@ -17,14 +17,14 @@ const ExpandableSearch = () => {
 	const visibility = isExpanded ? "w-80" : "w-0";
 
 	return (
-		<div className="relative z-0 flex">
+		<div className="relative flex">
 			<div className={`absolute -right-3 ${visibility} top-1/2 -translate-y-1/2`}>
 				<motion.div initial="hidden" animate="visible" variants={expandableInput} layout className="relative">
 					<motion.button
 						type="button"
 						aria-label="Search"
 						onClick={() => setIsExpanded(false)}
-						className="absolute transition left-3 top-3 text-slate-400 hover:text-slate-600"
+						className="absolute transition left-3 top-3 text-slate-400 hover:text-slate-600 active:text-slate-800"
 					>
 						<Icon icon="solar:forward-bold-duotone" width="28" height="28" />
 					</motion.button>
@@ -38,13 +38,18 @@ const ExpandableSearch = () => {
 						type="button"
 						aria-label="Search"
 						onClick={search}
-						className="absolute transition right-3 top-3 text-slate-400 hover:text-slate-600"
+						className="absolute transition right-3 top-3 text-slate-400 hover:text-slate-600 active:text-slate-800"
 					>
 						<Icon icon="solar:magnifer-bold-duotone" width="28" height="28" />
 					</motion.button>
 				</motion.div>
 			</div>
-			<button type="button" aria-label="Expand search" onClick={handleMagnifier} className="transition text-slate-400 hover:text-slate-600">
+			<button
+				type="button"
+				aria-label="Expand search"
+				onClick={handleMagnifier}
+				className="transition text-slate-400 hover:text-slate-600 active:text-slate-800"
+			>
 				<Icon icon="solar:magnifer-bold-duotone" width="28" height="28" />
 			</button>
 		</div>

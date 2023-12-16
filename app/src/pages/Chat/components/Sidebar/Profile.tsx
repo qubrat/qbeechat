@@ -33,7 +33,15 @@ const Profile = () => {
 					</Dropdown.ItemList>
 				</Dropdown.Button>
 			</Dropdown>
-			<UserInfoModal image={user?.profilePicture} name={user?.name} email={user?.email} setVisible={setModalVisible} visible={modalVisible} />
+			{modalVisible && (
+				<UserInfoModal
+					image={user?.profilePicture}
+					name={user?.name}
+					email={user?.email}
+					setVisible={setModalVisible}
+					visible={modalVisible}
+				/>
+			)}
 		</>
 	);
 };

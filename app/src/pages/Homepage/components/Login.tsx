@@ -1,13 +1,12 @@
 import { useState, FormEvent } from "react";
 import Input from "../../../components/Input/Input";
-import PasswordInput from "../../../components/Input/PasswordInput";
 import Button from "../../../components/Button";
 import customToast from "../../../components/customToast";
 import HomepageForm from "./HomepageForm";
 import { HomepageMode } from "../Homepage";
 import useInput from "../../../hooks/useInput";
 
-import login from "../../../assets/login.jpg";
+import RegexService from "../../../services/regexService";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
@@ -21,8 +20,8 @@ type LoginProps = {
 };
 
 const Login = ({ setMode }: LoginProps) => {
-	const email = useInput("");
-	const password = useInput("");
+	const email = useInput("", true);
+	const password = useInput("", true);
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
@@ -30,16 +29,22 @@ const Login = ({ setMode }: LoginProps) => {
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
-		if (!email.value?.trim() || !password.value?.trim()) {
-			customToast({ message: "Please provide email and password", variant: "warning" });
+
+		const emailValid = email.validate();
+		const passwordValid = password.validate();
+
+		if (!emailValid || !passwordValid) {
 			setLoading(false);
 			return;
 		}
-		if (!email.value?.includes("@") && email.value?.trim()) {
+
+		if (!RegexService.isEmail(email.value)) {
+			email.setError("Please provide a valid email");
 			customToast({ message: "Please provide a valid email", variant: "warning" });
 			setLoading(false);
 			return;
 		}
+
 		try {
 			const payload = {
 				email: email.value,
@@ -62,14 +67,7 @@ const Login = ({ setMode }: LoginProps) => {
 
 	return (
 		<AnimatePresence>
-			<motion.div
-				className="flex items-center max-w-5xl text-left rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"
-				variants={slideVariants}
-				initial="hidden"
-				animate="visible"
-				exit="exit"
-				key="login"
-			>
+			<motion.div variants={slideVariants} initial="hidden" animate="visible" exit="exit" key="login">
 				<HomepageForm
 					textTop="log in to start chatting"
 					header="Welcome back"
@@ -78,22 +76,31 @@ const Login = ({ setMode }: LoginProps) => {
 					subtitleLink="Create it"
 					buttonText="Log in"
 					modeLink="register"
+					action={handleSubmit}
 				>
-					<form onSubmit={handleSubmit} className="flex flex-col max-w-md gap-4 w-[448px]">
-						<Input
-							icon="solar:letter-bold-duotone"
-							type="text"
-							label="Email"
-							name="email"
-							placeholder="Enter your email"
-							{...email}
-							required
-						/>
-						<PasswordInput label="Password" name="password" placeholder="Enter your password" {...password} required />
-						<Button type="submit" size="medium" text="Log in" loading={loading} width="1/2" />
-					</form>
+					<Input
+						type="text"
+						icon="solar:letter-bold-duotone"
+						label="Email"
+						name="email"
+						placeholder="Enter your email"
+						value={email.value}
+						onChange={email.onChange}
+						error={email.error}
+						required
+					/>
+					<Input
+						type="password"
+						label="Password"
+						name="password"
+						placeholder="Enter your password"
+						value={password.value}
+						onChange={password.onChange}
+						error={password.error}
+						required
+					/>
+					<Button type="submit" size="medium" text="Log in" loading={loading} width="1/2" />
 				</HomepageForm>
-				<img src={login} alt="" className="max-w-lg rounded-r-3xl" />
 			</motion.div>
 		</AnimatePresence>
 	);

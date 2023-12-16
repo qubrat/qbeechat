@@ -1,13 +1,3 @@
-.input-w-label[type="text"]:focus~.input-label,
-.input-w-label[type="password"]:focus~.input-label {
-    @apply text-primary;
-}
-
 .toast+.toast {
     margin-top: 1rem;
-}
-
-.required::after {
-    @apply ml-1 text-slate-400;
-    content: "*";
 }

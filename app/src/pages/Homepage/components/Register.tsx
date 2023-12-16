@@ -1,13 +1,12 @@
 import { useState, FormEvent } from "react";
 import Input from "../../../components/Input/Input";
-import PasswordInput from "../../../components/Input/PasswordInput";
 import Button from "../../../components/Button";
 import customToast from "../../../components/customToast";
 import HomepageForm from "./HomepageForm";
 import { HomepageMode } from "../Homepage";
 import useInput from "../../../hooks/useInput";
 
-import register from "../../../assets/register.jpg";
+import RegexService from "../../../services/regexService";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
@@ -21,10 +20,11 @@ type RegisterProps = {
 };
 
 const Register = ({ setMode }: RegisterProps) => {
-	const name = useInput("");
-	const email = useInput("");
-	const password = useInput("");
-	const confirmPassword = useInput("");
+	const name = useInput("", true);
+	const email = useInput("", true);
+	const password = useInput("", true);
+	const confirmPassword = useInput("", true);
+
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
@@ -32,21 +32,31 @@ const Register = ({ setMode }: RegisterProps) => {
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
-		if (!email.value?.trim() || !password.value?.trim() || !confirmPassword.value?.trim() || !name.value?.trim()) {
-			customToast({ message: "Please provide all the details", variant: "warning" });
+
+		const nameValid = name.validate();
+		const emailValid = email.validate();
+		const passwordValid = password.validate();
+		const confirmPasswordValid = confirmPassword.validate();
+
+		if (!nameValid || !emailValid || !passwordValid || !confirmPasswordValid) {
 			setLoading(false);
 			return;
 		}
-		if (!email.value?.includes("@") && email.value?.trim()) {
+
+		if (!RegexService.isEmail(email.value)) {
+			email.setError("Please provide a valid email");
 			customToast({ message: "Please provide a valid email", variant: "warning" });
 			setLoading(false);
 			return;
 		}
-		if (password.value?.trim() !== confirmPassword.value?.trim()) {
-			customToast({ message: "Passwords do not match", variant: "error" });
+
+		if (password.value !== confirmPassword.value) {
+			confirmPassword.setError("Passwords do not match");
+			customToast({ message: "Passwords do not match", variant: "warning" });
 			setLoading(false);
 			return;
 		}
+
 		try {
 			const payload = {
 				name: name.value,
@@ -70,14 +80,7 @@ const Register = ({ setMode }: RegisterProps) => {
 
 	return (
 		<AnimatePresence>
-			<motion.div
-				className="flex items-center max-w-5xl text-left rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"
-				variants={slideVariants}
-				initial="hidden"
-				animate="visible"
-				exit="exit"
-				key="register"
-			>
+			<motion.div variants={slideVariants} initial="hidden" animate="visible" exit="exit" key="register">
 				<HomepageForm
 					textTop="Start for free"
 					header="Create new account"
@@ -86,18 +89,54 @@ const Register = ({ setMode }: RegisterProps) => {
 					subtitleLink="Log in"
 					buttonText="Register"
 					modeLink="login"
+					action={handleSubmit}
 				>
-					<form onSubmit={handleSubmit} className="flex flex-col max-w-md gap-6 w-[448px]">
-						<Input icon="solar:user-hand-up-bold-duotone" type="text" label="Enter your name" name="name" placeholder="Name" {...name} />
-						<Input icon="solar:letter-bold-duotone" type="text" label="Email" name="email" placeholder="Enter your email" {...email} />
-						<div className="flex gap-4">
-							<PasswordInput label="Password" name="password" placeholder="Enter password" {...password} />
-							<PasswordInput label="Confirm password" name="confirmPassword" placeholder="Confirm password" {...confirmPassword} />
-						</div>
-						<Button type="submit" size="medium" text="Register" loading={loading} width="1/2" />
-					</form>
+					<Input
+						type="text"
+						icon="solar:user-hand-up-bold-duotone"
+						label="Name"
+						name="name"
+						placeholder="Enter your name"
+						value={name.value}
+						onChange={name.onChange}
+						error={name.error}
+						required
+					/>
+					<Input
+						type="text"
+						icon="solar:letter-bold-duotone"
+						label="Email"
+						name="email"
+						placeholder="Enter your email"
+						value={email.value}
+						onChange={email.onChange}
+						error={email.error}
+						required
+					/>
+					<Input
+						className="flex-1"
+						type="password"
+						label="Password"
+						name="password"
+						placeholder="Enter password"
+						value={password.value}
+						onChange={password.onChange}
+						error={password.error}
+						required
+					/>
+					<Input
+						className="flex-1"
+						type="password"
+						label="Confirm password"
+						name="confirmPassword"
+						placeholder="Confirm password"
+						value={confirmPassword.value}
+						onChange={confirmPassword.onChange}
+						error={confirmPassword.error}
+						required
+					/>
+					<Button type="submit" size="medium" text="Register" loading={loading} width="1/2" />
 				</HomepageForm>
-				<img src={register} alt="" className="max-w-lg rounded-r-3xl" />
 			</motion.div>
 		</AnimatePresence>
 	);

@@ -16,15 +16,23 @@ const Avatar = ({ image, size = "md", status }: AvatarProps) => {
 		offline: "bg-red",
 	};
 
-	return image ? (
+	const renderStatus = () => {
+		if (status) {
+			return <div className={`absolute bottom-0 right-0 w-3 h-3 border-2 rounded-full border-slate-100 ${statusColors[status]}`}></div>;
+		} else {
+			return null;
+		}
+	};
+
+	return (
 		<div className="relative ">
-			{status !== undefined && (
-				<div className={`absolute bottom-0 right-0 w-3 h-3 border-2 rounded-full border-slate-100 ${statusColors[status]}`}></div>
+			{renderStatus()}
+			{image ? (
+				<img className={`${sizes[size]} rounded-full border-2 border-slate-200`} src={image} alt="avatar" />
+			) : (
+				<div className={`${sizes[size]} rounded-full bg-slate-100 border-2 border-slate-200`}></div>
 			)}
-			<img className={`${sizes[size]} rounded-full border-2 border-slate-200`} src={image} alt="avatar" />
 		</div>
-	) : (
-		<div className={`${sizes[size]} rounded-full bg-slate-100 ring-2 ring-offset-2 ring-slate-200`}></div>
 	);
 };
 

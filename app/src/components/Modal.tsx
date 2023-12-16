@@ -15,11 +15,7 @@ const Modal = ({ children, visible, setVisible }: ModalProps) => {
 	};
 
 	return (
-		<div
-			className={`${
-				visible ? "" : "hidden"
-			} fixed top-0 left-0 z-50 flex items-center justify-center w-full h-screen bg-opacity-60 bg-slate-900`}
-		>
+		<div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-screen bg-opacity-60 bg-slate-900">
 			<motion.div
 				variants={modal}
 				initial="hidden"

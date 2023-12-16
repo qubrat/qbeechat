@@ -39,14 +39,14 @@ export const ChatContextProvider = ({ children }: ChatContextProviderProps) => {
 
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		const user: User = JSON.parse(localStorage.getItem("user") || "{}");
-		setUser(user);
+	// useEffect(() => {
+	// 	const user: User = JSON.parse(localStorage.getItem("user") || "{}");
+	// 	setUser(user);
 
-		if (!user._id) {
-			navigate("/");
-		}
-	}, [navigate]);
+	// 	if (!user._id) {
+	// 		navigate("/");
+	// 	}
+	// }, [navigate]);
 
 	return <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats }}>{children}</ChatContext.Provider>;
 };

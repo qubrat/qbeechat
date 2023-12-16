@@ -1,15 +1,16 @@
 import { Icon } from "@iconify/react";
+import { twMerge } from "tailwind-merge";
 
 type ClickableIconProps = {
 	icon: string;
 	action: () => void;
-	color?: string;
 	size?: number;
+	className?: string;
 };
 
-const ClickableIcon = ({ icon, action, size = 28, color }: ClickableIconProps) => {
+const ClickableIcon = ({ icon, action, size = 28, className }: ClickableIconProps) => {
 	return (
-		<button type="button" onClick={action} className="transition text-slate-400 hover:text-slate-600">
+		<button type="button" onClick={action} className={twMerge("transition text-slate-400 hover:text-slate-600 active:text-slate-800", className)}>
 			<Icon icon={icon} width={size} height={size} />
 		</button>
 	);

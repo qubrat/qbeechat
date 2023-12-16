@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import Spinner from "./Spinner";
 
 type SubmitButtonProps = {
@@ -9,10 +10,21 @@ type SubmitButtonProps = {
 	color?: "primary" | "success" | "warning" | "error";
 	icon?: string;
 	size?: "small" | "medium" | "large";
-	width?: "full" | "1/2" | "1/3" | "2/3" | "1/4" | "2/4" | "3/4";
+	width?: "full" | "1/2";
+	className?: string;
 };
 
-const Button = ({ type, onClick, text, loading, variant = "filled", color = "primary", size = "medium", width = "full" }: SubmitButtonProps) => {
+const Button = ({
+	type,
+	onClick,
+	text,
+	loading,
+	variant = "filled",
+	color = "primary",
+	size = "medium",
+	width = "full",
+	className,
+}: SubmitButtonProps) => {
 	const outline = "border border-transparent hover:border-slate-400 hover:bg-slate-100 active:bg-slate-400 active:text-slate-100";
 
 	const variants = {
@@ -45,17 +57,15 @@ const Button = ({ type, onClick, text, loading, variant = "filled", color = "pri
 	const widths = {
 		full: "w-full",
 		"1/2": "w-1/2",
-		"1/3": "w-1/3",
-		"2/3": "w-2/3",
-		"1/4": "w-1/4",
-		"2/4": "w-2/4",
-		"3/4": "w-3/4",
 	};
 
 	return (
 		<button
 			type={type}
-			className={`${sizes[size]} ${variants[variant][color]} ${widths[width]} rounded-full font-bold transition disabled:cursor-default disabled:opacity-70`}
+			className={twMerge(
+				`${sizes[size]} ${variants[variant][color]} ${widths[width]} rounded-full font-bold transition disabled:cursor-default disabled:opacity-70`,
+				className
+			)}
 			onClick={onClick}
 			disabled={loading}
 		>

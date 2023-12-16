@@ -1,11 +1,22 @@
 import { ChangeEvent, useState } from "react";
 
-const useInput = (initialValue: string | null) => {
+const useInput = (initialValue: string | number, required: boolean = false) => {
 	const [value, setValue] = useState(initialValue);
-	const [error, setError] = useState(false);
+	const [error, setError] = useState<string | undefined>();
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setError(undefined);
 		setValue(e.target.value);
+	};
+
+	const validate = () => {
+		if (!value.toString() && required) {
+			setError("This field cannot be empty");
+			return false;
+		} else {
+			setError(undefined);
+			return true;
+		}
 	};
 
 	return {
@@ -13,6 +24,7 @@ const useInput = (initialValue: string | null) => {
 		error,
 		onChange: handleChange,
 		setError,
+		validate,
 	};
 };
 

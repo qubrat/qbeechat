@@ -10,11 +10,12 @@ type HomepageFormProps = {
 	buttonText: string;
 	setMode: React.Dispatch<React.SetStateAction<HomepageMode>>;
 	modeLink: HomepageMode;
+	action: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-const HomepageForm = ({ textTop, header, subtitleText, subtitleLink, children, setMode, modeLink }: HomepageFormProps) => {
+const HomepageForm = ({ textTop, header, subtitleText, subtitleLink, children, setMode, modeLink, action }: HomepageFormProps) => {
 	return (
-		<div className="flex flex-col h-full gap-6 m-16">
+		<div className="p-16 justify-center flex flex-col h-full gap-6 max-w-5xl text-left rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
 			<h2 className="font-bold uppercase text-slate-400">{textTop}</h2>
 			<h1 className="flex items-baseline gap-4 text-4xl font-bold text-slate-800">
 				<span className="w-[10px] h-[10px] rounded-full bg-primary"></span>
@@ -29,7 +30,9 @@ const HomepageForm = ({ textTop, header, subtitleText, subtitleLink, children, s
 					{subtitleLink}
 				</span>
 			</p>
-			{children}
+			<form onSubmit={action} className="flex flex-col max-w-md gap-8 w-[448px]">
+				{children}
+			</form>
 		</div>
 	);
 };

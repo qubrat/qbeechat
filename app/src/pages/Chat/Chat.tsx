@@ -1,5 +1,4 @@
 import { useChatContext } from "../../context/chatContext";
-import Navbar from "./components/Navbar";
 import SidePanel from "./components/SidePanel";
 import Sidebar from "./components/Sidebar";
 
