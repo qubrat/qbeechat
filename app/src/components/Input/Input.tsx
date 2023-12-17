@@ -65,6 +65,14 @@ const Input: FC<React.PropsWithChildren<HTMLAttributes<HTMLDivElement> & InputPr
 		}
 	};
 
+	const errorState = () => {
+		if (error) {
+			return "ring-2 ring-red ring-inset bg-white";
+		} else {
+			return "";
+		}
+	};
+
 	return (
 		<div className={twMerge("relative", className)}>
 			<input
@@ -75,7 +83,10 @@ const Input: FC<React.PropsWithChildren<HTMLAttributes<HTMLDivElement> & InputPr
 				placeholder={placeholder}
 				onChange={onChange}
 				disabled={disabled}
-				className="w-full px-6 pt-6 pb-2 font-bold transition duration-200 border-4 outline-none appearance-none input-w-label border-slate-200 text-slate-800 rounded-2xl bg-slate-200 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-inset"
+				className={twMerge(
+					"w-full px-6 pt-6 pb-2 font-bold transition duration-200 border-4 outline-none appearance-none input-w-label border-slate-200 text-slate-800 rounded-2xl bg-slate-200 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-inset",
+					errorState()
+				)}
 			/>
 			<label htmlFor={label} className={`absolute text-sm input-label top-3 left-7 text-slate-400 ${requiredAsterisk()}`}>
 				{label}

@@ -34,12 +34,13 @@ const Login = ({ setMode }: LoginProps) => {
 		const passwordValid = password.validate();
 
 		if (!emailValid || !passwordValid) {
+			customToast({ message: "Please enter all fields", variant: "warning" });
 			setLoading(false);
 			return;
 		}
 
 		if (!RegexService.isEmail(email.value)) {
-			email.setError("Please provide a valid email");
+			email.setError("Please enter a valid email");
 			customToast({ message: "Please provide a valid email", variant: "warning" });
 			setLoading(false);
 			return;
