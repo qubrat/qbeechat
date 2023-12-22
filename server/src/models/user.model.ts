@@ -11,6 +11,7 @@ export interface IUser {
 	password: string;
 	profilePicture: string;
 	isAdmin: boolean;
+	refreshToken: string;
 }
 
 interface IUserMethods {
@@ -30,6 +31,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
 			default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
 		},
 		isAdmin: { type: Boolean, default: false },
+		refreshToken: { type: String, trim: true },
 	},
 	{ timestamps: true }
 );

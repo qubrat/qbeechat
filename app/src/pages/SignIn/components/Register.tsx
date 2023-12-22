@@ -13,7 +13,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
 import axios from "../../../api/axios";
-import { getActions } from "../../../stores/authStore";
 
 import type { LoginMode } from "../SignIn";
 
@@ -30,7 +29,6 @@ const Register = ({ setMode }: RegisterProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
-	const { setAuth } = getActions();
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -68,10 +66,11 @@ const Register = ({ setMode }: RegisterProps) => {
 				password: password.value,
 			};
 			const { data } = await axios.post("/auth/register", payload);
-			setAuth(data.accessToken);
-			customToast({ message: "Registered successfully", variant: "success" });
-			setLoading(false);
-			navigate("/");
+			if (data.success) {
+				customToast({ message: "Registered successfully", variant: "success" });
+				setLoading(false);
+				navigate("/registered");
+			}
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.code === "USER_EXISTS") {

@@ -1,5 +1,5 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { useUserData } from "../stores/authStore";
+import { useUserData } from "../../stores/authStore";
 
 const RequireAuth = () => {
 	const user = useUserData();

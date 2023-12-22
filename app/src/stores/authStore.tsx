@@ -44,7 +44,6 @@ const authStore = create<AuthStore>((set) => ({
 				accessToken,
 				user,
 			});
-			console.log(user);
 		},
 
 		logout: () =>

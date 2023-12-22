@@ -32,6 +32,9 @@ const login = asyncHandler(async (req, res) => {
 		const accessToken = generateAccessToken({ id: user._id });
 		const refreshToken = generateRefreshToken({ id: user._id });
 
+		user.refreshToken = refreshToken;
+		await user.save();
+
 		res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 7 });
 		res.status(200).json({ accessToken });
 	}
@@ -56,11 +59,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 	const user = await User.create({ name, email, password, profilePicture });
 
 	if (user) {
-		const accessToken = generateAccessToken({ id: user._id });
-		const refreshToken = generateRefreshToken({ id: user._id });
-
-		res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none", maxAge: 1000 * 60 * 60 * 24 * 7 });
-		res.status(200).json({ accessToken });
+		res.status(200).json({ success: `New user ${user.name} successfully created.` });
 	} else {
 		res.status(400);
 		throw new UserError("Provided invalid user data", "INVALID_DATA");
@@ -106,6 +105,22 @@ const logout = asyncHandler(async (req, res) => {
 	if (!cookies.jwt) {
 		res.status(204);
 	}
+	const refreshToken = cookies.jwt;
+
+	const user = await User.findOne({ refreshToken }).exec();
+
+	// Is refreshToken in db?
+	if (!user) {
+		res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });
+		res.status(204);
+	}
+
+	// Delete refreshToken in db
+	if (user) {
+		user.refreshToken = "";
+		await user.save();
+	}
+
 	res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });
 	res.status(200).json({ message: "Logged out" });
 });
