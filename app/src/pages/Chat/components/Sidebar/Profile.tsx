@@ -3,19 +3,17 @@ import { Dropdown } from "../../../../components/Dropdown/Dropdown";
 import Avatar from "../../../../components/Avatar";
 import UserInfoModal from "../UserInfoModal";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { getActions } from "../../../../stores/authStore";
 
 const Profile = () => {
 	const { user, setUser } = useChatContext();
 
-	const navigate = useNavigate();
+	const { logout } = getActions();
 
 	const [modalVisible, setModalVisible] = useState(false);
 
 	const onLogout = () => {
-		setUser(null);
-		localStorage.removeItem("user");
-		navigate("/");
+		logout();
 	};
 
 	const onInfo = () => {

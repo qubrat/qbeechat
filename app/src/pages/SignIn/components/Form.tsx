@@ -1,19 +1,19 @@
 import React from "react";
-import type { HomepageMode } from "../Homepage";
+import type { LoginMode } from "../SignIn";
 
-type HomepageFormProps = {
+type FormProps = {
 	textTop: string;
 	header: string;
 	subtitleText: string;
 	subtitleLink: string;
 	children: React.ReactNode;
 	buttonText: string;
-	setMode: React.Dispatch<React.SetStateAction<HomepageMode>>;
-	modeLink: HomepageMode;
+	setMode: React.Dispatch<React.SetStateAction<LoginMode>>;
+	modeLink: LoginMode;
 	action: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-const HomepageForm = ({ textTop, header, subtitleText, subtitleLink, children, setMode, modeLink, action }: HomepageFormProps) => {
+const Form = ({ textTop, header, subtitleText, subtitleLink, children, setMode, modeLink, action }: FormProps) => {
 	return (
 		<div className="p-16 justify-center flex flex-col h-full gap-6 max-w-5xl text-left rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
 			<h2 className="font-bold uppercase text-slate-400">{textTop}</h2>
@@ -37,4 +37,4 @@ const HomepageForm = ({ textTop, header, subtitleText, subtitleLink, children, s
 	);
 };
 
-export default HomepageForm;
+export default Form;

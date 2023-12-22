@@ -1,40 +1,40 @@
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 import { useStoreWithEqualityFn } from "zustand/traditional";
-import CookieService from "../services/cookieService";
 
 type TokenData = {
+	user: {
+		id: string;
+	};
+	iat: number;
+	exp: number;
+};
+
+type User = {
 	id: string;
-	name: string;
-	email: string;
-	profilePicture: string;
 };
 
 type AuthStore = {
 	accessToken: string | undefined;
-	accessTokenData: TokenData | undefined;
-	refreshToken: string | undefined;
+	user: User | undefined;
 
 	actions: {
-		setAccessToken: (accessToken: string | undefined) => void;
-		setRefreshToken: (refreshToken: string | undefined) => void;
-		init: () => void;
-		clearTokens: () => void;
+		setAuth: (accessToken: string | undefined) => void;
+		logout: () => void;
 	};
 };
 
 export const decodeAccessToken = (accessToken: string): TokenData => jwtDecode<TokenData>(accessToken);
 
-const authStore = create<AuthStore>((set, get) => ({
+const authStore = create<AuthStore>((set) => ({
 	accessToken: undefined,
-	accessTokenData: undefined,
-	refreshToken: undefined,
+	user: undefined,
 
 	actions: {
-		setAccessToken: (accessToken: string | undefined) => {
-			const accessTokenData = (() => {
+		setAuth: (accessToken: string | undefined) => {
+			const user = (() => {
 				try {
-					return accessToken ? decodeAccessToken(accessToken) : undefined;
+					return accessToken ? decodeAccessToken(accessToken).user : undefined;
 				} catch (error) {
 					console.error(error);
 					return undefined;
@@ -42,23 +42,15 @@ const authStore = create<AuthStore>((set, get) => ({
 			})();
 			set({
 				accessToken,
-				accessTokenData,
+				user,
 			});
+			console.log(user);
 		},
-		setRefreshToken: (refreshToken: string | undefined) =>
-			set({
-				refreshToken,
-			}),
-		init: () => {
-			const { setAccessToken, setRefreshToken } = get().actions;
-			setAccessToken(CookieService.getCookie("accessToken"));
-			setRefreshToken(CookieService.getCookie("refreshToken"));
-		},
-		clearTokens: () =>
+
+		logout: () =>
 			set({
 				accessToken: undefined,
-				accessTokenData: undefined,
-				refreshToken: undefined,
+				user: undefined,
 			}),
 	},
 }));
@@ -73,14 +65,12 @@ type Params<U> = Parameters<typeof useStoreWithEqualityFn<typeof authStore, U>>;
 
 // Selectors
 const accessTokenSelector = (state: ExtractState<typeof authStore>) => state.accessToken;
-const accessTokenDataSelector = (state: ExtractState<typeof authStore>) => state.accessTokenData;
-const refreshTokenSelector = (state: ExtractState<typeof authStore>) => state.refreshToken;
+const userDataSelector = (state: ExtractState<typeof authStore>) => state.user;
 const actionsSelector = (state: ExtractState<typeof authStore>) => state.actions;
 
 // getters
 export const getAccessToken = () => accessTokenSelector(authStore.getState());
-export const getAccessTokenData = () => accessTokenDataSelector(authStore.getState());
-export const getRefreshToken = () => refreshTokenSelector(authStore.getState());
+export const getUserData = () => userDataSelector(authStore.getState());
 export const getActions = () => actionsSelector(authStore.getState());
 
 function useAuthStore<U>(selector: Params<U>[1], equalityFn?: Params<U>[2]) {
@@ -89,6 +79,5 @@ function useAuthStore<U>(selector: Params<U>[1], equalityFn?: Params<U>[2]) {
 
 // Hooks
 export const useAccessToken = () => useAuthStore(accessTokenSelector);
-export const useAccessTokenData = () => useAuthStore(accessTokenDataSelector);
-export const useRefreshToken = () => useAuthStore(refreshTokenSelector);
+export const useUserData = () => useAuthStore(userDataSelector);
 export const useActions = () => useAuthStore(actionsSelector);

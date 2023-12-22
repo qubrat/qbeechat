@@ -1,22 +1,24 @@
 import { useState, FormEvent } from "react";
-import Input from "../../../components/Input/Input";
-import Button from "../../../components/Button";
-import customToast from "../../../components/customToast";
-import HomepageForm from "./HomepageForm";
-import { HomepageMode } from "../Homepage";
+import { useNavigate } from "react-router-dom";
 import useInput from "../../../hooks/useInput";
 
 import RegexService from "../../../services/regexService";
 
+import Input from "../../../components/Input/Input";
+import Button from "../../../components/Button";
+import customToast from "../../../components/customToast";
+import Form from "./Form";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
-import axios from "axios";
-import { BASE_URL } from "../../../config/settings";
-import { useNavigate } from "react-router-dom";
+import axios from "../../../api/axios";
+import { getActions } from "../../../stores/authStore";
+
+import type { LoginMode } from "../SignIn";
 
 type RegisterProps = {
-	setMode: React.Dispatch<React.SetStateAction<HomepageMode>>;
+	setMode: React.Dispatch<React.SetStateAction<LoginMode>>;
 };
 
 const Register = ({ setMode }: RegisterProps) => {
@@ -28,6 +30,7 @@ const Register = ({ setMode }: RegisterProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
+	const { setAuth } = getActions();
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -64,11 +67,11 @@ const Register = ({ setMode }: RegisterProps) => {
 				email: email.value,
 				password: password.value,
 			};
-			const { data } = await axios.post(`${BASE_URL}/auth/register`, payload);
-			localStorage.setItem("user", JSON.stringify(data));
+			const { data } = await axios.post("/auth/register", payload);
+			setAuth(data.accessToken);
 			customToast({ message: "Registered successfully", variant: "success" });
 			setLoading(false);
-			navigate("/chat");
+			navigate("/");
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.code === "USER_EXISTS") {
@@ -82,7 +85,7 @@ const Register = ({ setMode }: RegisterProps) => {
 	return (
 		<AnimatePresence>
 			<motion.div variants={slideVariants} initial="hidden" animate="visible" exit="exit" key="register">
-				<HomepageForm
+				<Form
 					textTop="Start for free"
 					header="Create new account"
 					setMode={setMode}
@@ -137,7 +140,7 @@ const Register = ({ setMode }: RegisterProps) => {
 						required
 					/>
 					<Button type="submit" size="medium" text="Register" loading={loading} width="1/2" />
-				</HomepageForm>
+				</Form>
 			</motion.div>
 		</AnimatePresence>
 	);

@@ -12,7 +12,7 @@ type DecodedUserType = {
 };
 
 export const authorize = expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-	const authHeader = req.headers.authorization;
+	const authHeader = (req.headers["authorization"] || req.headers["Authorization"]) as string;
 
 	if (!authHeader?.startsWith("Bearer ")) {
 		res.status(401);

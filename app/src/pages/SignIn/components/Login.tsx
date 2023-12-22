@@ -1,22 +1,24 @@
 import { useState, FormEvent } from "react";
-import Input from "../../../components/Input/Input";
-import Button from "../../../components/Button";
-import customToast from "../../../components/customToast";
-import HomepageForm from "./HomepageForm";
-import { HomepageMode } from "../Homepage";
+import { useNavigate } from "react-router-dom";
 import useInput from "../../../hooks/useInput";
 
 import RegexService from "../../../services/regexService";
 
+import Input from "../../../components/Input/Input";
+import Button from "../../../components/Button";
+import customToast from "../../../components/customToast";
+import Form from "./Form";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
-import axios from "axios";
-import { BASE_URL } from "../../../config/settings";
-import { useNavigate } from "react-router-dom";
+import axios from "../../../api/axios";
+import { getActions } from "../../../stores/authStore";
+
+import type { LoginMode } from "../SignIn";
 
 type LoginProps = {
-	setMode: React.Dispatch<React.SetStateAction<HomepageMode>>;
+	setMode: React.Dispatch<React.SetStateAction<LoginMode>>;
 };
 
 const Login = ({ setMode }: LoginProps) => {
@@ -25,6 +27,7 @@ const Login = ({ setMode }: LoginProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
+	const { setAuth } = getActions();
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -51,11 +54,11 @@ const Login = ({ setMode }: LoginProps) => {
 				email: email.value,
 				password: password.value,
 			};
-			const { data } = await axios.post(`${BASE_URL}/auth`, payload);
-			localStorage.setItem("user", JSON.stringify(data));
+			const { data } = await axios.post("/auth", payload);
+			setAuth(data.accessToken);
 			customToast({ message: "Logged in successfully", variant: "success" });
 			setLoading(false);
-			navigate("/chat");
+			navigate("/");
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.code === "INVALID_CREDENTIALS") {
@@ -69,7 +72,7 @@ const Login = ({ setMode }: LoginProps) => {
 	return (
 		<AnimatePresence>
 			<motion.div variants={slideVariants} initial="hidden" animate="visible" exit="exit" key="login">
-				<HomepageForm
+				<Form
 					textTop="log in to start chatting"
 					header="Welcome back"
 					setMode={setMode}
@@ -101,7 +104,7 @@ const Login = ({ setMode }: LoginProps) => {
 						required
 					/>
 					<Button type="submit" size="medium" text="Log in" loading={loading} width="1/2" />
-				</HomepageForm>
+				</Form>
 			</motion.div>
 		</AnimatePresence>
 	);
