@@ -13,9 +13,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
 import { axiosWithCredentials } from "../../../api/axios";
-import { getActions } from "../../../stores/authStore";
+import { getActions, usePersistLogin } from "../../../stores/authStore";
 
 import type { LoginMode } from "../SignIn";
+import Checkbox from "../../../components/CheckboxWithDescription";
 
 type LoginProps = {
 	setMode: React.Dispatch<React.SetStateAction<LoginMode>>;
@@ -27,7 +28,13 @@ const Login = ({ setMode }: LoginProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
-	const { setAuth } = getActions();
+	const { setAuth, persistLogin } = getActions();
+
+	const persist = usePersistLogin();
+
+	const togglePersist = () => {
+		persistLogin(!persist);
+	};
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -103,6 +110,10 @@ const Login = ({ setMode }: LoginProps) => {
 						error={password.error}
 						required
 					/>
+					<Checkbox onChange={togglePersist} checked={persist}>
+						<p className="block leading-relaxed text-slate-900">Remember Me</p>
+						<p className="block text-sm leading-normal text-slate-700">You&apos;ll be able to login without password for 24 hours.</p>
+					</Checkbox>
 					<Button type="submit" size="medium" text="Log in" loading={loading} width="1/2" />
 				</Form>
 			</motion.div>
