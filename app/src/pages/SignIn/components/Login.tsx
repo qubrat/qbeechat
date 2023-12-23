@@ -12,7 +12,7 @@ import Form from "./Form";
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
-import axios from "../../../api/axios";
+import { axiosWithCredentials } from "../../../api/axios";
 import { getActions } from "../../../stores/authStore";
 
 import type { LoginMode } from "../SignIn";
@@ -54,11 +54,11 @@ const Login = ({ setMode }: LoginProps) => {
 				email: email.value,
 				password: password.value,
 			};
-			const { data } = await axios.post("/auth", payload);
+			const { data } = await axiosWithCredentials.post("/auth", payload);
 			setAuth(data.accessToken);
 			customToast({ message: "Logged in successfully", variant: "success" });
 			setLoading(false);
-			navigate("/");
+			navigate("/", { replace: true });
 		} catch (error: any) {
 			console.error(error);
 			if (error.response.data.code === "INVALID_CREDENTIALS") {

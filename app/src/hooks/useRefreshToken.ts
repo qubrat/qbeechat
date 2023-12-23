@@ -11,7 +11,7 @@ const useRefreshToken = () => {
 			});
 			setAuth(response.data.accessToken);
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 		}
 	};
 };

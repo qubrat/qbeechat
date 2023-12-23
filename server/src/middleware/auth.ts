@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserError } from "@/library/errors";
 import { config } from "@/config/config";
 
-type DecodedUserType = {
+export type DecodedUserType = {
 	user: UserType;
 	iat: number;
 	exp: number;

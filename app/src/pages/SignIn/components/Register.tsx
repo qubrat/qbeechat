@@ -69,7 +69,7 @@ const Register = ({ setMode }: RegisterProps) => {
 			if (data.success) {
 				customToast({ message: "Registered successfully", variant: "success" });
 				setLoading(false);
-				navigate("/registered");
+				navigate("/registered", { replace: true });
 			}
 		} catch (error: any) {
 			console.error(error);

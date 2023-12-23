@@ -3,17 +3,20 @@ import { Dropdown } from "../../../../components/Dropdown/Dropdown";
 import Avatar from "../../../../components/Avatar";
 import UserInfoModal from "../UserInfoModal";
 import { useState } from "react";
-import { getActions } from "../../../../stores/authStore";
+import useLogout from "../../../../hooks/useLogout";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
 	const { user, setUser } = useChatContext();
 
-	const { logout } = getActions();
+	const logout = useLogout();
+	const navigate = useNavigate();
 
 	const [modalVisible, setModalVisible] = useState(false);
 
-	const onLogout = () => {
-		logout();
+	const onLogout = async () => {
+		await logout();
+		navigate("/login", { replace: true });
 	};
 
 	const onInfo = () => {

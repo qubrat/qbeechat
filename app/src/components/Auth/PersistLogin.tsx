@@ -22,7 +22,7 @@ const PersistLogin = () => {
 		!accessToken ? verifyRefreshToken() : setLoading(false);
 	}, []);
 
-	return <>{loading ? <Spinner size="large" /> : <Outlet />}</>;
+	return <>{loading ? <Spinner size="large" color="grey" /> : <Outlet />}</>;
 };
 
 export default PersistLogin;

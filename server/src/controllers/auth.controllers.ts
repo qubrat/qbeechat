@@ -1,10 +1,11 @@
-import { User, UserType } from "@/models/user.model";
+import { User } from "@/models/user.model";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { UserError } from "@/library/errors";
 import { generateAccessToken, generateRefreshToken } from "@/library/jwt";
 import { config } from "@/config/config";
+import { DecodedUserType } from "@/middleware/auth";
 
 // @desc    Login user
 // @route   POST /api/v1/auth
@@ -80,12 +81,16 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
 	const refreshToken = cookies.jwt;
 
 	try {
-		const decoded = jwt.verify(refreshToken, config.jwtTokenSecret.refresh || "supersecrettoken") as UserType;
+		const decoded = jwt.verify(refreshToken, config.jwtTokenSecret.refresh || "supersecrettoken") as DecodedUserType;
 
-		const user = await User.findById(decoded.id);
+		const user = await User.findOne({ refreshToken }).exec();
 		if (!user) {
-			res.status(404);
-			throw new UserError("User does not exist", "USER_NOT_FOUND");
+			res.status(403);
+			throw new UserError("Token not found", "FORBIDDEN");
+		}
+		if (user.id !== decoded.user.id) {
+			res.status(403);
+			throw new UserError("Token not valid", "FORBIDDEN");
 		}
 
 		const accessToken = generateAccessToken({ id: user._id });
