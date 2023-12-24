@@ -8,6 +8,7 @@ import Input from "../../../components/Input/Input";
 import Button from "../../../components/Button";
 import customToast from "../../../components/customToast";
 import Form from "./Form";
+import { Checkbox } from "../../../components/Checkbox/Checkbox";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
@@ -16,7 +17,6 @@ import { axiosWithCredentials } from "../../../api/axios";
 import { getActions, usePersistLogin } from "../../../stores/authStore";
 
 import type { LoginMode } from "../SignIn";
-import Checkbox from "../../../components/CheckboxWithDescription";
 
 type LoginProps = {
 	setMode: React.Dispatch<React.SetStateAction<LoginMode>>;
@@ -111,8 +111,11 @@ const Login = ({ setMode }: LoginProps) => {
 						required
 					/>
 					<Checkbox onChange={togglePersist} checked={persist}>
-						<p className="block leading-relaxed text-slate-900">Remember Me</p>
-						<p className="block text-sm leading-normal text-slate-700">You&apos;ll be able to login without password for 24 hours.</p>
+						<Checkbox.Input />
+						<Checkbox.Text>
+							<Checkbox.Text.Label text="Remember me" bold />
+							<Checkbox.Text.Description text="You will stay logged in for 24 hours." />
+						</Checkbox.Text>
 					</Checkbox>
 					<Button type="submit" size="medium" text="Log in" loading={loading} width="1/2" />
 				</Form>
