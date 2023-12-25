@@ -1,4 +1,4 @@
-import { BASE_URL } from "../config/settings";
+import { BASE_URL } from "../../config/settings";
 import axios from "axios";
 
 export default axios.create({

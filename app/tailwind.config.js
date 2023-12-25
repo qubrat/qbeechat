@@ -8,8 +8,16 @@ export default {
 			transparent: "transparent",
 			current: "currentColor",
 			slate: colors.slate,
-			white: colors.white,
-			black: colors.black,
+			white: "#fff",
+			grey: {
+				100: "#e8ebef",
+				200: "#e0e3e8",
+				300: "#ced4db",
+				400: "#bdc4cf",
+				500: "#abb5c2",
+				600: "#9aa5b5",
+			},
+			black: "#181818",
 			text: "#181818",
 			green: {
 				DEFAULT: "#58bb69",

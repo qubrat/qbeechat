@@ -19,7 +19,7 @@ const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 
 	const users = await User.find(keyword)
 		.find({ _id: { $ne: req.body.user?.id } })
-		.select("-password");
+		.select("-password -refreshToken -__v");
 	res.status(200).json(users);
 });
 
@@ -27,7 +27,7 @@ const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 // @route   GET /api/v1/user/:id
 // @access  Private
 const getUser = asyncHandler(async (req: Request, res: Response) => {
-	const user = await User.findById(req.params.id).select("-password");
+	const user = await User.findById(req.params.id).select("-password -refreshToken -__v -updatedAt");
 	if (user) {
 		res.status(200).json(user);
 	} else {

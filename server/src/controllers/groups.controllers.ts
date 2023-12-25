@@ -24,7 +24,9 @@ const createGroupChat = expressAsyncHandler(async (req: Request, res: Response) 
 	usersArray.push(user);
 
 	const groupChat = await Chat.create({ chatName: name, isGroupChat: true, users: usersArray, groupAdmin: user });
-	const fullChat = await Chat.findById(groupChat._id).populate("users", "-password").populate("groupAdmin", "-password");
+	const fullChat = await Chat.findById(groupChat._id)
+		.populate("users", "_id createdAt email isAdmin name profilePicture")
+		.populate("groupAdmin", "_id createdAt email isAdmin name profilePicture");
 
 	res.status(201).json(fullChat);
 });
@@ -33,7 +35,7 @@ const createGroupChat = expressAsyncHandler(async (req: Request, res: Response) 
 // @route   PUT /api/v1/chat/group/rename
 // @access  Private
 const renameGroupChat = expressAsyncHandler(async (req: Request, res: Response) => {
-	const { chatId, newName, user } = req.body;
+	const { chatId, newName } = req.body;
 
 	if (!chatId || !newName) {
 		res.status(400);
@@ -41,8 +43,8 @@ const renameGroupChat = expressAsyncHandler(async (req: Request, res: Response) 
 	}
 
 	const updatedChat = await Chat.findByIdAndUpdate(chatId, { chatName: newName }, { new: true })
-		.populate("users", "-password")
-		.populate("groupAdmin", "-password");
+		.populate("users", "_id createdAt email isAdmin name profilePicture")
+		.populate("groupAdmin", "_id createdAt email isAdmin name profilePicture");
 
 	res.status(200).json(updatedChat);
 });
@@ -59,8 +61,8 @@ const addUserToGroupChat = expressAsyncHandler(async (req: Request, res: Respons
 	}
 
 	const updatedChat = await Chat.findByIdAndUpdate(chatId, { $addToSet: { users: userId } }, { new: true })
-		.populate("users", "-password")
-		.populate("groupAdmin", "-password");
+		.populate("users", "_id createdAt email isAdmin name profilePicture")
+		.populate("groupAdmin", "_id createdAt email isAdmin name profilePicture");
 
 	if (!updatedChat) {
 		res.status(404);
@@ -100,8 +102,8 @@ const removeUserFromGroupChat = expressAsyncHandler(async (req: Request, res: Re
 
 	const updatedChat = await chat
 		?.updateOne({ $pull: { users: userId } })
-		.populate("users", "-password")
-		.populate("groupAdmin", "-password");
+		.populate("users", "_id createdAt email isAdmin name profilePicture")
+		.populate("groupAdmin", "_id createdAt email isAdmin name profilePicture");
 
 	if (!updatedChat) {
 		res.status(404);

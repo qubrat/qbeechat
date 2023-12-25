@@ -12,7 +12,7 @@ import Form from "./Form";
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
-import axios from "../../../api/axios";
+import axios from "../../../apis/config/axios";
 
 import type { LoginMode } from "../SignIn";
 

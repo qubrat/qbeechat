@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 
-import { ChatContextProvider } from "./context/chatContext";
 import Chat from "./pages/Chat/Chat";
 import { Toaster } from "react-hot-toast";
 import RequireAuth from "./components/Auth/RequireAuth";
@@ -8,10 +7,15 @@ import SignIn from "./pages/SignIn/SignIn";
 import Page404 from "./pages/Page404/Page404";
 import PersistLogin from "./components/Auth/PersistLogin";
 import RegisterSuccess from "./pages/SignIn/components/RegisterSuccess";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 const App = () => {
 	return (
-		<ChatContextProvider>
+		<QueryClientProvider client={queryClient}>
 			<Routes>
 				{/*	Public routes*/}
 				<Route path="/login" element={<SignIn />} />
@@ -26,7 +30,8 @@ const App = () => {
 				<Route path="/*" element={<Page404 />} />
 			</Routes>
 			<Toaster position="bottom-center" />
-		</ChatContextProvider>
+			<ReactQueryDevtools />
+		</QueryClientProvider>
 	);
 };
 

@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../apis/config/axios";
 import { getActions } from "../stores/authStore";
 
 const useLogout = () => {

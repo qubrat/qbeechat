@@ -13,7 +13,7 @@ import { Checkbox } from "../../../components/Checkbox/Checkbox";
 import { motion, AnimatePresence } from "framer-motion";
 import { slideVariants } from "../../../animation/slideVariants";
 
-import { axiosWithCredentials } from "../../../api/axios";
+import { axiosWithCredentials } from "../../../apis/config/axios";
 import { getActions, usePersistLogin } from "../../../stores/authStore";
 
 import type { LoginMode } from "../SignIn";

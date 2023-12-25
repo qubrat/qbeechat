@@ -1,10 +1,13 @@
+import Spinner from "./Spinner";
+
 type AvatarProps = {
 	image?: string;
 	size?: "sm" | "md" | "lg";
 	status?: "online" | "offline";
+	loading?: boolean;
 };
 
-const Avatar = ({ image, size = "md", status }: AvatarProps) => {
+const Avatar = ({ image, size = "md", status, loading }: AvatarProps) => {
 	const sizes = {
 		sm: "w-8 h-8",
 		md: "w-10 h-10",
@@ -27,7 +30,11 @@ const Avatar = ({ image, size = "md", status }: AvatarProps) => {
 	return (
 		<div className="relative ">
 			{renderStatus()}
-			{image ? (
+			{loading ? (
+				<div className={`${sizes[size]} rounded-full bg-slate-100 border-2 border-slate-200 flex items-center justify-center`}>
+					<Spinner size="medium" color="grey" />
+				</div>
+			) : image ? (
 				<img className={`${sizes[size]} rounded-full border-2 border-slate-200`} src={image} alt="avatar" />
 			) : (
 				<div className={`${sizes[size]} rounded-full bg-slate-100 border-2 border-slate-200`}></div>

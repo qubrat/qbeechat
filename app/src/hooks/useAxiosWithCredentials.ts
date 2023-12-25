@@ -1,4 +1,4 @@
-import { axiosWithCredentials } from "../api/axios";
+import { axiosWithCredentials } from "../apis/config/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import { useAccessToken } from "../stores/authStore";

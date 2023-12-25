@@ -3,6 +3,7 @@ import { Chat } from "@/models/chat.model";
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { User } from "@/models/user.model";
+import { UserError } from "@/library/errors";
 
 // @desc    Get all user chats
 // @route   GET /api/v1/chat
@@ -10,8 +11,8 @@ import { User } from "@/models/user.model";
 const getAllUserChats = expressAsyncHandler(async (req: Request, res: Response) => {
 	try {
 		let chats: unknown = await Chat.find({ users: { $elemMatch: { $eq: req.body.user?._id } } })
-			.populate("users", "-password")
-			.populate("groupAdmin", "-password")
+			.populate("users", "_id createdAt email isAdmin name profilePicture")
+			.populate("groupAdmin", "_id createdAt email isAdmin name profilePicture")
 			.populate("lastMessage")
 			.sort({ updatedAt: -1 });
 		chats = await User.populate(chats, { path: "lastMessage.sender", select: "name email profilePicture" });
@@ -35,7 +36,7 @@ const accessChat = expressAsyncHandler(async (req: Request, res: Response) => {
 		isGroupChat: false,
 		$and: [{ users: { $elemMatch: { $eq: userId } } }, { users: { $elemMatch: { $eq: req.body.user?._id } } }],
 	})
-		.populate("users", "-password")
+		.populate("users", "_id createdAt email isAdmin name profilePicture")
 		.populate("lastMessage");
 
 	chats = await User.populate(chats, { path: "lastMessage.sender", select: "name email profilePicture" });
@@ -44,8 +45,13 @@ const accessChat = expressAsyncHandler(async (req: Request, res: Response) => {
 		res.status(200).json(chats[0]);
 	} else {
 		try {
-			const createdChat = await Chat.create({ chatName: "sender", isGroupChat: false, users: [req.body.user?._id, userId] });
-			const fullChat = await Chat.findById(createdChat._id).populate("users", "-password");
+			const selectedUser = await User.findById(userId);
+			if (!selectedUser) {
+				res.status(404);
+				throw new UserError("User not found", "USER_NOT_FOUND");
+			}
+			const createdChat = await Chat.create({ chatName: selectedUser.name, isGroupChat: false, users: [req.body.user?._id, userId] });
+			const fullChat = await Chat.findById(createdChat._id).populate("users", "_id createdAt email isAdmin name profilePicture");
 			res.status(201).json(fullChat);
 		} catch (error: any) {
 			res.status(400);
