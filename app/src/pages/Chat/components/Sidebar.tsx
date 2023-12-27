@@ -1,9 +1,14 @@
+import { twMerge } from "tailwind-merge";
 import { Logotype } from "../../../components/Logo";
 import Profile from "./Sidebar/Profile";
 
-const Sidebar = () => {
+type SidebarProps = {
+	className?: string;
+};
+
+const Sidebar = ({ className }: SidebarProps) => {
 	return (
-		<nav className="fixed top-0 left-0 flex flex-col justify-between h-screen p-8 bg-slate-100">
+		<nav className={twMerge("flex flex-col justify-between overflow-hidden flex-none h-screen p-8 grow-0 ", className)}>
 			<Logotype />
 			<Profile />
 		</nav>

@@ -9,13 +9,14 @@ export const useChatAPI = () => {
 		chatName: string;
 		isGroupChat: boolean;
 		users: User[];
-		lastMessage: string;
+		lastMessage?: string;
+		picture: string;
 		createdAt: string;
 		updatedAt: string;
 	};
 
 	const accessChat = async (id: string) => {
-		const response = await api.post(`/chats/access`, { userId: id });
+		const response = await api.post(`/chats`, { userId: id });
 		return response.data as Chat;
 	};
 

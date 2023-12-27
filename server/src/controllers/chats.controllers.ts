@@ -50,7 +50,12 @@ const accessChat = expressAsyncHandler(async (req: Request, res: Response) => {
 				res.status(404);
 				throw new UserError("User not found", "USER_NOT_FOUND");
 			}
-			const createdChat = await Chat.create({ chatName: selectedUser.name, isGroupChat: false, users: [req.body.user?._id, userId] });
+			const createdChat = await Chat.create({
+				chatName: selectedUser.name,
+				isGroupChat: false,
+				users: [req.body.user?._id, userId],
+				picture: selectedUser.profilePicture,
+			});
 			const fullChat = await Chat.findById(createdChat._id).populate("users", "_id createdAt email isAdmin name profilePicture");
 			res.status(201).json(fullChat);
 		} catch (error: any) {

@@ -14,7 +14,7 @@ const ExpandableSearch = () => {
 		console.log("searching");
 	};
 
-	const visibility = isExpanded ? "w-80" : "w-0";
+	const visibility = isExpanded ? "w-[280px]" : "w-0";
 
 	return (
 		<div className="relative flex">
