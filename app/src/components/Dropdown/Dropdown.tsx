@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
-import { DropdownButton } from "./Button";
-import { DropdownItemList } from "./ItemList";
+import { DropdownButton } from "./DropdownButton";
+import { DropdownItemList } from "./DropdownItemList";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 interface IDropdownContext {

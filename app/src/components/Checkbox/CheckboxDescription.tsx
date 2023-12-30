@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-type DescriptionProps = {
+type CheckboxDescriptionProps = {
 	text: string;
 	className?: string;
 };
@@ -10,8 +10,8 @@ type DescriptionProps = {
  * @param {string} text - Text to be displayed inside the description.
  * @param {string} className - Tailwind classes to be applied to the description.
  */
-const Description = ({ text, className }: DescriptionProps) => {
+const CheckboxDescription = ({ text, className }: CheckboxDescriptionProps) => {
 	return <p className={twMerge("block text-sm leading-normal text-slate-700", className)}>{text}</p>;
 };
 
-export default Description;
+export default CheckboxDescription;

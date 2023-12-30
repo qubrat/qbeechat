@@ -8,7 +8,7 @@ type SidebarProps = {
 
 const Sidebar = ({ className }: SidebarProps) => {
 	return (
-		<nav className={twMerge("flex flex-col justify-between overflow-hidden flex-none h-screen p-8 grow-0 ", className)}>
+		<nav className={twMerge("flex flex-col justify-between flex-none h-screen p-8 grow-0", className)}>
 			<Logotype />
 			<Profile />
 		</nav>

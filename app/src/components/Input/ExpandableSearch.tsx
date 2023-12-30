@@ -22,7 +22,8 @@ const ExpandableSearch = () => {
 				<motion.div initial="hidden" animate="visible" variants={expandableInput} layout className="relative">
 					<motion.button
 						type="button"
-						aria-label="Search"
+						aria-label="Close search"
+						title="Close search"
 						onClick={() => setIsExpanded(false)}
 						className="absolute transition left-3 top-3 text-slate-400 hover:text-slate-600 active:text-slate-800"
 					>
@@ -38,6 +39,7 @@ const ExpandableSearch = () => {
 						type="button"
 						aria-label="Search"
 						onClick={search}
+						title="Search"
 						className="absolute transition right-3 top-3 text-slate-400 hover:text-slate-600 active:text-slate-800"
 					>
 						<Icon icon="solar:magnifer-bold-duotone" width="28" height="28" />
@@ -46,7 +48,8 @@ const ExpandableSearch = () => {
 			</div>
 			<button
 				type="button"
-				aria-label="Expand search"
+				aria-label="Search chats"
+				title="Search for chats"
 				onClick={handleMagnifier}
 				className="transition text-slate-400 hover:text-slate-600 active:text-slate-800"
 			>

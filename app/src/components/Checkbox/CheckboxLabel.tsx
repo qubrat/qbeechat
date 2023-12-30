@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-type LabelProps = {
+type CheckboxLabelProps = {
 	text: string;
 	bold?: boolean;
 	className?: string;
@@ -12,10 +12,10 @@ type LabelProps = {
  * @param {boolean} bold - Whether the label is bold or not.
  * @param {string} className - Tailwind classes to be applied to the label.
  */
-const Label = ({ text, bold = false, className }: LabelProps) => {
+const CheckboxLabel = ({ text, bold = false, className }: CheckboxLabelProps) => {
 	const boldClass = bold ? "font-bold" : "";
 
 	return <p className={twMerge(`block ${boldClass} leading-relaxed text-slate-700`, className)}>{text}</p>;
 };
 
-export default Label;
+export default CheckboxLabel;

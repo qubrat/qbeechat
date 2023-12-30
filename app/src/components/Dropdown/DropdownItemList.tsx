@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useDropdown } from "./Dropdown";
-import { DropdownItem } from "./Item";
+import { DropdownItem } from "./DropdownItemListItem";
 import { menu } from "../../animation/menu";
 
 type DropdownItemListProps = {

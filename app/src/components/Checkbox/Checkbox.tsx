@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import Input from "./Input";
-import Textbox from "./Textbox";
+import Input from "./CheckboxInput";
+import Textbox from "./CheckboxTextbox";
 import { twMerge } from "tailwind-merge";
 
 interface ICheckboxContext {

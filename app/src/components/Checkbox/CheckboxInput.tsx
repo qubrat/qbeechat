@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import { useCheckbox } from "./Checkbox";
 import { twMerge } from "tailwind-merge";
 
-type CheckboxProps = {
+type CheckboxInputProps = {
 	className?: string;
 	disabled?: boolean;
 };
@@ -12,7 +12,7 @@ type CheckboxProps = {
  * @param {boolean} disabled - Whether the checkbox is disabled or not.
  * @param {string} className - Tailwind classes to be applied to the checkbox.
  */
-const Checkbox = ({ disabled, className }: CheckboxProps) => {
+const CheckboxInput = ({ disabled, className }: CheckboxInputProps) => {
 	const { checked, onChange } = useCheckbox();
 
 	return (
@@ -32,4 +32,4 @@ const Checkbox = ({ disabled, className }: CheckboxProps) => {
 	);
 };
 
-export default Checkbox;
+export default CheckboxInput;
